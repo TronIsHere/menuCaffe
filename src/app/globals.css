@@ -2,10 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-
+.font-morabba-bold {
+  font-family: var(--font-morabba-bold);
+}
+.font-iran-sans-light {
+  font-family: var(--font-iran-sans-light);
+}
 
 @layer base {
   :root {
+    --font-my-custom: "MorabbaFont";
 
     --background: 0 0% 100%;
 
@@ -71,7 +77,7 @@
 
     --popover-foreground: 0 0% 98%;
 
-    --primary: 0 0% 98%;
+    --primary: 246 90% 61%;
 
     --primary-foreground: 0 0% 9%;
 
@@ -119,3 +125,4 @@
     @apply bg-background text-foreground;
   }
 }
+
