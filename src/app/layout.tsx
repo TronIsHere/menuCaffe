@@ -9,16 +9,6 @@ import { IoMdSettings } from "react-icons/io";
 import "./globals.css";
 import Link from "next/link";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
   title: "Dashboard | Your App Name",
   description: "Your dashboard description",
@@ -42,13 +32,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${morabbaBold.variable} ${iranSansLight.variable} antialiased`}
+        className={`${morabbaBold.variable} ${iranSansLight.variable} antialiased`}
       >
         <div className="flex flex-row-reverse min-h-screen dark">
-          <aside className="flex-[2] text-center dark:bg-darkSecondary p-4 border-r dark:text-white">
+          <aside className="flex-[2] text-center dark:bg-darkSecondary  border-r dark:text-white">
             {/* Sidebar content */}
-            <h1 className="font-morabba-bold text-4xl pt-5">مِنو کافه</h1>
-            <ul className="mt-4 font-iran-sans-light">
+            <h1 className="font-morabba-bold mt-8 pb-4 text-4xl border-b">
+              مِنو کافه
+            </h1>
+            <ul className="mt-4 font-iran-sans-light px-4">
               <li>
                 <Link
                   href={"#"}
