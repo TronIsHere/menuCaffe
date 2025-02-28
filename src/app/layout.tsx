@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
-import { MdSpaceDashboard } from "react-icons/md";
-import { FaLayerGroup } from "react-icons/fa";
-import { BiSolidCategoryAlt } from "react-icons/bi";
-import { BiSolidOffer } from "react-icons/bi";
-import { IoMdSettings } from "react-icons/io";
+import { BsThreeDots } from "react-icons/bs";
+import Sidebar from "@/components/sidebar";
 import "./globals.css";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Dashboard | Your App Name",
@@ -35,61 +30,21 @@ export default function RootLayout({
         className={`${morabbaBold.variable} ${iranSansLight.variable} antialiased`}
       >
         <div className="flex flex-row-reverse min-h-screen dark">
-          <aside className="flex-[2] text-center dark:bg-darkSecondary  border-r dark:text-white">
-            {/* Sidebar content */}
-            <h1 className="font-morabba-bold mt-8 pb-4 text-4xl border-b">
-              مِنو کافه
-            </h1>
-            <ul className="mt-4 font-iran-sans-light px-4">
-              <li>
-                <Link
-                  href={"#"}
-                  className={`flex hover:bg-primary hover:text-white justify-end my-2 items-center py-3 px-5 rounded-lg cursor-pointer hover:bg-palletPurple-400 duration-500 `}
-                >
-                  <span className="pr-2 ">داشبورد</span>
-                  <MdSpaceDashboard size={18} />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={"#"}
-                  className={`flex hover:bg-primary hover:text-white justify-end my-2 items-center py-3 px-5 rounded-lg cursor-pointer hover:bg-palletPurple-400 duration-500 `}
-                >
-                  <span className="pr-2 ">محصولات </span>
-                  <FaLayerGroup size={18} />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={"#"}
-                  className={`flex hover:bg-primary hover:text-white justify-end my-2 items-center py-3 px-5 rounded-lg cursor-pointer hover:bg-palletPurple-400 duration-500 `}
-                >
-                  <span className="pr-2 ">دسته بندی ها</span>
-                  <BiSolidCategoryAlt size={18} />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={"#"}
-                  className={`flex hover:bg-primary hover:text-white justify-end my-2 items-center py-3 px-5 rounded-lg cursor-pointer hover:bg-palletPurple-400 duration-500 `}
-                >
-                  <span className="pr-2 ">پیشنهادات ویژه</span>
-                  <BiSolidOffer size={18} />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={"#"}
-                  className={`flex hover:bg-primary hover:text-white justify-end my-2 items-center py-3 px-5 rounded-lg cursor-pointer hover:bg-palletPurple-400 duration-500 `}
-                >
-                  <span className="pr-2 ">تنظیمات </span>
-                  <IoMdSettings size={18} />
-                </Link>
-              </li>
-            </ul>
-          </aside>
-          <main className="flex-[8] p-4 px-6 min-h-[300px] bg-darkPrimary">
-            {children}
+          <Sidebar />
+          <main className="flex-[8]  min-h-[300px] bg-darkPrimary">
+            <div className="bg-darkSecondary min-h-[73px] border-r border-b flex items-center px-7 dark:text-white">
+              <div className="flex gap-3 items-center">
+                <div className="flex-col">
+                  <span className="font-iran-sans-light text-sm">پلوتو</span>
+                </div>
+                <img
+                  src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt=""
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="p-4 px-6">{children}</div>
           </main>
         </div>
       </body>
