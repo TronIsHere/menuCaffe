@@ -12,8 +12,13 @@ export default {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        darkSecondary: "#1b1b1b",
         darkPrimary: "#101010",
+        darkSecondary: "#1b1b1b",
+        warning: {
+          400: "#372810",
+          900: "#fea109",
+        },
+        ErrorPrimary: "#dd371f",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
@@ -22,9 +27,39 @@ export default {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
+        error: {
+          100: "#F78D8F",
+          200: "#F68082",
+          300: "#F67476",
+          400: "#F5686A",
+          500: "#F34F52", // Main Error
+          600: "#C94144",
+          700: "#9E3335",
+          800: "#732627",
+          900: "#491819",
+        },
+        success: {
+          100: "#82CB93",
+          200: "#73C586",
+          300: "#64BF78",
+          400: "#27A644", // Main Success
+          500: "#208938",
+          600: "#196C2C",
+          700: "#134F20",
+          800: "#0C3214",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          100: "#9C91F9",
+          200: "#9084F9",
+          300: "#8477F8",
+          400: "#786AF7",
+          500: "#5442F5", // Primary color
+          600: "#4537CA",
+          700: "#372B9F",
+          800: "#281F74",
+          900: "#19144A",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
