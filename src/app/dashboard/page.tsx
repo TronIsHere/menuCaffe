@@ -11,7 +11,7 @@ import ViewChart from "@/components/dashboard/viewChart";
 
 const DashboardPage: NextPage = () => {
   return (
-    <div className="text-white space-y-6 font-iran-sans-light" dir="rtl">
+    <div className="text-white space-y-6 font-iran-sans-regular" dir="rtl">
       <div className="grid grid-cols-3 gap-5 ">
         {" "}
         <AnalyticsBox

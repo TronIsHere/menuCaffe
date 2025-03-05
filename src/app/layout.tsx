@@ -14,9 +14,9 @@ const morabbaBold = localFont({
   variable: "--font-morabba-bold",
   weight: "700",
 });
-const iranSansLight = localFont({
+const iranSansRegular = localFont({
   src: "./fonts/IRANSans-Reg.woff",
-  variable: "--font-iran-sans-light",
+  variable: "--font-iran-sans-regular",
   weight: "300",
 });
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${morabbaBold.variable} ${iranSansLight.variable} antialiased`}
+        className={`${morabbaBold.variable} ${iranSansRegular.variable} antialiased`}
       >
         <div className="flex flex-row-reverse min-h-screen dark">
           <Sidebar />
@@ -35,7 +35,7 @@ export default function RootLayout({
             <div className="bg-darkSecondary min-h-[73px] border-r border-b flex items-center px-7 dark:text-white">
               <div className="flex gap-3 items-center">
                 <div className="flex-col">
-                  <span className="font-iran-sans-light text-sm">پلوتو</span>
+                  <span className="font-iran-sans-regular text-sm">پلوتو</span>
                 </div>
                 <img
                   src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

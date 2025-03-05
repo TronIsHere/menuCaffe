@@ -5,8 +5,8 @@
 .font-morabba-bold {
   font-family: var(--font-morabba-bold);
 }
-.font-iran-sans-light {
-  font-family: var(--font-iran-sans-light);
+.font-iran-sans-regular {
+  font-family: var(--font-iran-sans-regular);
 }
 
 @layer base {

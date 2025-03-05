@@ -2,8 +2,8 @@ import { NextPage } from "next";
 
 const itemsPage: NextPage = () => {
   return (
-    <div>
-      <span className="text-white">test items</span>
+    <div className="text-white ">
+      <h1>محصولات</h1>
     </div>
   );
 };

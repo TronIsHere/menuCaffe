@@ -45,7 +45,7 @@ export default function Sidebar() {
         مِنو کافه
       </h1>
       <nav className="mt-4 px-4">
-        <ul className="font-iran-sans-light space-y-2">
+        <ul className="font-iran-sans-regular space-y-2">
           {navItems.map((item) => (
             <li key={item.href}>
               <Link
