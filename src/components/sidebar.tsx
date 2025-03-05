@@ -50,10 +50,10 @@ export default function Sidebar() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="flex hover:bg-primary hover:text-white justify-end items-center py-3 px-5 rounded-lg cursor-pointer transition-colors duration-300"
+                className="flex hover:bg-primary-500 hover:text-white  items-center py-3 px-5 rounded-lg cursor-pointer transition-colors duration-300"
               >
-                <span className="pr-2">{item.label}</span>
                 {item.icon}
+                <span className="pr-2">{item.label}</span>
               </Link>
             </li>
           ))}

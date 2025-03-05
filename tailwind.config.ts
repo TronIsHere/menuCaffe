@@ -51,15 +51,15 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-          100: "#9C91F9",
-          200: "#9084F9",
-          300: "#8477F8",
-          400: "#786AF7",
-          500: "#5442F5", // Primary color
-          600: "#4537CA",
-          700: "#372B9F",
-          800: "#281F74",
-          900: "#19144A",
+          100: "#B5A2F0",
+          200: "#A18AEC",
+          300: "#8D72E8",
+          400: "#7A5BE3",
+          500: "#7650CF", // Primary color
+          600: "#5F41A7",
+          700: "#493280",
+          800: "#332458",
+          900: "#1D152F",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

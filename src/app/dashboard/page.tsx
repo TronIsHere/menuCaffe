@@ -11,7 +11,7 @@ import ViewChart from "@/components/dashboard/viewChart";
 const DashboardPage: NextPage = () => {
   return (
     <div className="text-white space-y-6 font-iran-sans-regular" dir="rtl">
-      <div className="grid grid-cols-3 gap-5 ">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 ">
         {" "}
         <AnalyticsBox
           title="بازدید های امروز شما"
@@ -34,7 +34,7 @@ const DashboardPage: NextPage = () => {
       </div>
       <div>
         <h4 className="font-bold mt-10 text-2xl">اقدامات سریع</h4>
-        <div className="flex mt-5 gap-3 ">
+        <div className="flex flex-col md:flex-row   mt-5 gap-3 ">
           <Button variant="outline">
             <IoMdAdd />
             افزودن محصول
@@ -55,7 +55,7 @@ const DashboardPage: NextPage = () => {
       </div>
       <div>
         <h4 className="font-bold text-2xl mt-10">آنالیز بازدید ها</h4>
-        <div className="flex mt-3 gap-3 ">
+        <div className=" mt-3 ">
           <ViewChart />
         </div>
       </div>

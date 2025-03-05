@@ -28,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${morabbaBold.variable} ${iranSansRegular.variable} antialiased`}
       >
-        <div className="flex flex-row-reverse min-h-screen dark">
+        <div className="flex flex-col md:flex-row  min-h-screen dark" dir="rtl">
           <Sidebar />
           <main className="flex-[8]  min-h-[300px] bg-darkPrimary">
             <div className="bg-darkSecondary min-h-[73px] border-r border-b flex items-center px-7 dark:text-white">
