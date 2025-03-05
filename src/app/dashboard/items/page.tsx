@@ -1,9 +1,68 @@
+import { Button } from "@/components/ui/button";
 import { NextPage } from "next";
+import { FaEye } from "react-icons/fa";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import EditDialog from "@/components/dialogs/editDialog";
 
 const itemsPage: NextPage = () => {
   return (
-    <div className="text-white ">
-      <h1>محصولات</h1>
+    <div className="text-white font-iran-sans-regular" dir="rtl">
+      <h1 className="font-bold text-3xl">محصولات</h1>
+      <div className="flex mt-5 gap-3 ">
+        <Button variant="outline">
+          <FaEye />
+          پیش نمایش منو
+        </Button>
+      </div>
+      <Table className="mt-5">
+        <TableCaption className="pt-10"> لیست محصولات 🍮</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[200px] text-right">نام محصولات</TableHead>
+            <TableHead className="text-right">دسته بندی محصولات</TableHead>
+            <TableHead className="text-right"></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {Array(10)
+            .fill("")
+            .map((_, index) => (
+              <TableRow key={index}>
+                <TableCell className="font-medium">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src="https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?q=80&w=1349&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      alt="کاپوچینو"
+                      className="w-8 h-8 object-cover rounded-sm"
+                    />
+                    <span className="flex items-center">کاپوچینو</span>
+                  </div>
+                </TableCell>
+                <TableCell>نوشیدنی گرم</TableCell>
+                <TableCell className="flex justify-end gap-3">
+                  <EditDialog
+                    trigger={
+                      <Button variant="secondary" size={"sm"}>
+                        ویرایش
+                      </Button>
+                    }
+                  />
+                  <Button variant="destructive" size={"sm"}>
+                    حذف
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
     </div>
   );
 };

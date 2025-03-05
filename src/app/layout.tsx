@@ -1,7 +1,6 @@
+import Sidebar from "@/components/sidebar";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { BsThreeDots } from "react-icons/bs";
-import Sidebar from "@/components/sidebar";
 import "./globals.css";
 
 export const metadata: Metadata = {

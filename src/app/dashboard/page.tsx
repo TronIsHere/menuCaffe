@@ -4,7 +4,6 @@ import AnalyticsBox from "@/components/dashboard/analyticsBox";
 import { Button } from "@/components/ui/button";
 import { NextPage } from "next";
 import { FaArrowLeft, FaEye, FaPlusCircle } from "react-icons/fa";
-import { FiEdit } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
 
 import ViewChart from "@/components/dashboard/viewChart";
@@ -40,10 +39,10 @@ const DashboardPage: NextPage = () => {
             <IoMdAdd />
             افزودن محصول
           </Button>
-          <Button variant="outline">
+          {/* <Button variant="outline">
             <FiEdit size={40} />
             ویرایش منو
-          </Button>
+          </Button> */}
           <Button variant="outline">
             <FaPlusCircle />
             افزودن پیشنهاد ویژه
