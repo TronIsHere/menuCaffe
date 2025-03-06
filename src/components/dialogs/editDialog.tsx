@@ -22,9 +22,10 @@ import { Button } from "../ui/button";
 
 interface EditDialogProps {
   trigger?: ReactNode;
+  edit?: boolean;
 }
 
-const EditDialog: FC<EditDialogProps> = ({ trigger }) => {
+const EditDialog: FC<EditDialogProps> = ({ trigger, edit = true }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger || <span>Open</span>}</DialogTrigger>
@@ -33,7 +34,11 @@ const EditDialog: FC<EditDialogProps> = ({ trigger }) => {
         className="h-[500px] dark overflow-y-scroll font-iran-sans-regular"
       >
         <DialogHeader>
-          <DialogTitle>ویرایش محصول</DialogTitle>
+          {edit ? (
+            <DialogTitle>ویرایش محصول</DialogTitle>
+          ) : (
+            <DialogTitle>افزودن محصول</DialogTitle>
+          )}
           <DialogDescription></DialogDescription>
           <div className="flex flex-col gap-5 pt-4 ">
             <ImageUploader onImageSelect={() => {}} />

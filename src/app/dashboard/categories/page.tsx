@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { NextPage } from "next";
+import { Button } from "@/components/ui/button";
 import { FaEye } from "react-icons/fa";
 import {
   Table,
@@ -12,34 +12,33 @@ import {
 } from "@/components/ui/table";
 import EditDialog from "@/components/dialogs/editDialog";
 import { IoMdAdd } from "react-icons/io";
+import CategoryDialog from "@/components/dialogs/categoryDialog";
+interface CategoriesPageProps {}
 
-const itemsPage: NextPage = () => {
+const CategoriesPage: NextPage<CategoriesPageProps> = () => {
   return (
     <div className="text-white font-iran-sans-regular" dir="rtl">
       <h1 className="font-bold text-3xl">محصولات</h1>
       <div className="flex mt-5 gap-3 ">
-        <EditDialog
+        <CategoryDialog
           edit={false}
           trigger={
             <Button variant="default">
               <IoMdAdd />
-              افزودن محصول
+              افزودن دسته بندی
             </Button>
           }
         />
-
-        <Button variant="outline">
-          <FaEye />
-          پیش نمایش منو
-        </Button>
       </div>
       <Table className="mt-5">
-        <TableCaption className="pt-10"> لیست محصولات 🍮</TableCaption>
+        <TableCaption className="pt-10"> لیست دسته بندی ها 🍮</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[200px] text-right">نام محصولات</TableHead>
-            <TableHead className="text-right">دسته بندی محصولات</TableHead>
-            <TableHead className="text-right"></TableHead>
+            <TableHead className="w-[200px] text-right">
+              نام دسته بندی
+            </TableHead>
+            <TableHead className="text-right">ایکون</TableHead>
+            <TableHead className="text-right">تعداد محصولات</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -49,17 +48,20 @@ const itemsPage: NextPage = () => {
               <TableRow key={index}>
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-2">
-                    <img
-                      src="https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?q=80&w=1349&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                      alt="کاپوچینو"
-                      className="w-8 h-8 object-cover rounded-sm"
-                    />
-                    <span className="flex items-center">کاپوچینو</span>
+                    <span className="flex items-center">نوشیدنی گرم</span>
                   </div>
                 </TableCell>
-                <TableCell>نوشیدنی گرم</TableCell>
+                <TableCell>
+                  <img
+                    src="/img/categoryIcons/cocoa.png"
+                    className="w-8 h-8 object-cover rounded-sm"
+                  />
+                </TableCell>
+                <TableCell>
+                  <span>12</span>
+                </TableCell>
                 <TableCell className="flex justify-end gap-3">
-                  <EditDialog
+                  <CategoryDialog
                     trigger={
                       <Button variant="secondary" size={"sm"}>
                         ویرایش
@@ -78,4 +80,4 @@ const itemsPage: NextPage = () => {
   );
 };
 
-export default itemsPage;
+export default CategoriesPage;
