@@ -13,9 +13,9 @@ import {
 import EditDialog from "@/components/dialogs/editDialog";
 import { IoMdAdd } from "react-icons/io";
 import CategoryDialog from "@/components/dialogs/categoryDialog";
-interface CategoriesPageProps {}
+// interface CategoriesPageProps {}
 
-const CategoriesPage: NextPage<CategoriesPageProps> = () => {
+const CategoriesPage: NextPage = () => {
   return (
     <div className="text-white font-iran-sans-regular" dir="rtl">
       <h1 className="font-bold text-3xl">محصولات</h1>
