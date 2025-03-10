@@ -250,7 +250,7 @@ const MenuPage = () => {
         <div className={`${isScrolled ? "mt-16" : ""}`}>
           {/* Hero Banner for Most Popular Offer */}
           <div className="relative h-64 md:h-96 rounded-xl overflow-hidden mb-8">
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent "></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
             <div
               className="absolute inset-0 bg-cover bg-center"
               style={{
@@ -258,7 +258,7 @@ const MenuPage = () => {
                   "url('https://images.unsplash.com/photo-1442512595331-e89e73853f31?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
               }}
             ></div>
-            <div className="absolute bottom-0 right-0 left-0 p-6 ">
+            <div className="absolute bottom-0 right-0 left-0 p-6 z-20">
               <Badge variant="warning" className="mb-2">
                 پیشنهاد ویژه
               </Badge>
