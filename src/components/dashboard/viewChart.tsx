@@ -1,25 +1,21 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ComposedChart,
-  Legend,
-  Line,
-  Tooltip,
-  XAxis,
-  YAxis,
-  Area,
-  ResponsiveContainer,
-} from "recharts";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import {
+  Area,
+  CartesianGrid,
+  ComposedChart,
+  Legend,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 // Enhanced chart data with the same values
 const chartData = [

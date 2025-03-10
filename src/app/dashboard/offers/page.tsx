@@ -1,26 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { NextPage } from "next";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { IoMdAdd } from "react-icons/io";
-import { FaTag, FaBox, FaCalendarAlt, FaUserFriends } from "react-icons/fa";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -37,7 +18,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { NextPage } from "next";
+import { useState } from "react";
+import { FaBox, FaCalendarAlt, FaTag, FaUserFriends } from "react-icons/fa";
+import { IoMdAdd } from "react-icons/io";
 
 // Placeholder offer data
 const sampleOffers = [

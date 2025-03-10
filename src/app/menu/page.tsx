@@ -1,20 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import {
-  FaLeaf,
-  FaHotjar,
-  FaIceCream,
-  FaBirthdayCake,
-  FaCoffee,
-  FaCocktail,
-} from "react-icons/fa";
-import { MdLocalOffer } from "react-icons/md";
-import { IoFastFoodOutline } from "react-icons/io5";
 import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { FaBirthdayCake, FaCocktail, FaHotjar } from "react-icons/fa";
+import { IoFastFoodOutline } from "react-icons/io5";
+import { MdLocalOffer } from "react-icons/md";
 
 // Sample offer data (would come from your database)
 const specialOffers = [
