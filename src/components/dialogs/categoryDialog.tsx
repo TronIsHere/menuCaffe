@@ -7,41 +7,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FC, ReactNode, useState, useEffect } from "react";
+import { categoryIcons } from "@/lib/data";
+import { FC, ReactNode, useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { FaSearch } from "react-icons/fa";
-
-// Sample icons - replace or expand with your actual icons
-const categoryIcons = [
-  "/img/categoryIcons/bread.png",
-  "/img/categoryIcons/breakfast.png",
-  "/img/categoryIcons/cocoa.png",
-  "/img/categoryIcons/cold-drink.png",
-  "/img/categoryIcons/cookie.png",
-  "/img/categoryIcons/croissant.png",
-  "/img/categoryIcons/dessert.png",
-  "/img/categoryIcons/diet.png",
-  "/img/categoryIcons/discount.png",
-  "/img/categoryIcons/donut.png",
-  "/img/categoryIcons/drink.png",
-  "/img/categoryIcons/drink2.png",
-  "/img/categoryIcons/gelato.png",
-  "/img/categoryIcons/hot-chocolate.png",
-  "/img/categoryIcons/iced-coffee.png",
-  "/img/categoryIcons/juice.png",
-  "/img/categoryIcons/juice2.png",
-  "/img/categoryIcons/juices.png",
-  "/img/categoryIcons/latte-art.png",
-  "/img/categoryIcons/panna-cotta.png",
-  "/img/categoryIcons/sand1.png",
-  "/img/categoryIcons/sand2.png",
-  "/img/categoryIcons/sandwich.png",
-  "/img/categoryIcons/smoothie.png",
-  "/img/categoryIcons/special.png",
-  "/img/categoryIcons/tea.png",
-];
 
 interface CategoryDialogProps {
   trigger?: ReactNode;
@@ -72,11 +42,9 @@ const CategoryDialog: FC<CategoryDialogProps> = ({ trigger, edit = true }) => {
         className="max-h-[600px] dark overflow-y-scroll font-iran-sans-regular"
       >
         <DialogHeader>
-          {edit ? (
-            <DialogTitle>ویرایش دسته بندی</DialogTitle>
-          ) : (
-            <DialogTitle>افزودن دسته بندی</DialogTitle>
-          )}
+          <DialogTitle>
+            {edit ? "ویرایش دسته بندی" : "افزودن دسته بندی"}
+          </DialogTitle>
           <DialogDescription></DialogDescription>
           <div className="flex flex-col gap-5 pt-4" dir="rtl">
             <div className="flex-col mt-2">
