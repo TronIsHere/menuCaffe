@@ -23,6 +23,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import CustomJalaliDatePicker from "../jalaliDatePicker";
+import { JalaaliDate } from "@/types/jalaliDate";
 
 interface NewOfferDialogProps {
   trigger: React.ReactNode;
@@ -30,7 +32,15 @@ interface NewOfferDialogProps {
 
 const NewOfferDialog = ({ trigger }: NewOfferDialogProps) => {
   const [open, setOpen] = useState(false);
+  const [jalaliDateStart, setJalaliDateStart] = useState<
+    JalaaliDate | undefined
+  >(undefined);
+  const [jalaliDateEnd, setJalaliDateEnd] = useState<JalaaliDate | undefined>(
+    undefined
+  );
   const [offerType, setOfferType] = useState<OfferType>("item");
+
+  //TODO: sync formdata with jalaaliDate so jalali date return the correct data
   const [formData, setFormData] = useState({
     title: "",
     startDate: "",
@@ -118,26 +128,32 @@ const NewOfferDialog = ({ trigger }: NewOfferDialogProps) => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
+            <div className="flex justify-between gap-4">
+              <div className="flex justify-center items-center gap-2">
                 <Label htmlFor="start-date">تاریخ شروع</Label>
-                <Input
-                  id="start-date"
-                  type="date"
-                  className="mt-2"
-                  value={formData.startDate}
-                  onChange={(e) => handleChange("startDate", e.target.value)}
-                />
+                <CustomJalaliDatePicker
+                  selected={jalaliDateStart}
+                  onSelect={setJalaliDateStart}
+                >
+                  <Button className="" size={"default"}>
+                    {jalaliDateStart
+                      ? `${jalaliDateStart.jy}/${jalaliDateStart.jm}/${jalaliDateStart.jd}`
+                      : "انتخاب زمان"}
+                  </Button>
+                </CustomJalaliDatePicker>
               </div>
-              <div>
+              <div className="flex justify-center items-center gap-2">
                 <Label htmlFor="end-date">تاریخ پایان</Label>
-                <Input
-                  id="end-date"
-                  type="date"
-                  className="mt-2"
-                  value={formData.endDate}
-                  onChange={(e) => handleChange("endDate", e.target.value)}
-                />
+                <CustomJalaliDatePicker
+                  selected={jalaliDateStart}
+                  onSelect={setJalaliDateStart}
+                >
+                  <Button className="" size={"default"}>
+                    {jalaliDateStart
+                      ? `${jalaliDateStart.jy}/${jalaliDateStart.jm}/${jalaliDateStart.jd}`
+                      : "انتخاب زمان"}
+                  </Button>
+                </CustomJalaliDatePicker>
               </div>
             </div>
 
