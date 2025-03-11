@@ -12,6 +12,7 @@ import {
   CartesianGrid,
   ComposedChart,
   Legend,
+  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -60,57 +61,62 @@ const EnhancedChart = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-darkSecondary rounded-xl p-6 border shadow-xl"
+        className="bg-darkSecondary rounded-xl py-6 pr-4 border shadow-xl w-full"
       >
-        <div className="mt-3">
-          <ChartContainer config={chartConfig} className="h-[400px] w-full">
-            <ComposedChart data={animatedData}>
-              <defs>
-                <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8} />
-                  <stop offset="90%" stopColor="#8b5cf6" stopOpacity={0.0} />
-                </linearGradient>
-              </defs>
+        <div className="mt-3 ">
+          <ResponsiveContainer width="100%" height={400}>
+            <ChartContainer config={chartConfig} className="h-[400px] w-full ">
+              <ComposedChart
+                data={animatedData}
+                margin={{ top: 0, right: 0, left: -40, bottom: 0 }}
+              >
+                <defs>
+                  <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8} />
+                    <stop offset="90%" stopColor="#8b5cf6" stopOpacity={0.0} />
+                  </linearGradient>
+                </defs>
 
-              <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
-              <XAxis
-                dataKey="month"
-                stroke="#94a3b8"
-                tick={{ fill: "#94a3b8" }}
-                axisLine={{ stroke: "#334155", strokeWidth: 1 }}
-              />
-              <YAxis
-                stroke="#94a3b8"
-                tick={{ fill: "#94a3b8" }}
-                axisLine={{ stroke: "#334155", strokeWidth: 1 }}
-              />
-              <Tooltip content={<ChartTooltipContent />} />
-              <Legend wrapperStyle={{ paddingTop: "10px" }} />
+                <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
+                <XAxis
+                  dataKey="month"
+                  stroke="#94a3b8"
+                  tick={{ fill: "#94a3b8" }}
+                  axisLine={{ stroke: "#334155", strokeWidth: 1 }}
+                />
+                <YAxis
+                  stroke="#94a3b8"
+                  tick={{ fill: "#94a3b8" }}
+                  axisLine={{ stroke: "#334155", strokeWidth: 1 }}
+                />
+                <Tooltip content={<ChartTooltipContent />} />
+                <Legend wrapperStyle={{ paddingTop: "10px" }} />
 
-              <Area
-                type="monotone"
-                dataKey="views"
-                stroke="#8b5cf6"
-                strokeWidth={3}
-                name="بازدیدها"
-                fillOpacity={1}
-                fill="url(#colorViews)"
-                dot={{
-                  r: 6,
-                  strokeWidth: 2,
-                  fill: "#1e1e1e",
-                  stroke: "#8b5cf6",
-                }}
-                activeDot={{
-                  r: 8,
-                  strokeWidth: 2,
-                  fill: "#8b5cf6",
-                  stroke: "#fff",
-                }}
-                animationDuration={2000}
-              />
-            </ComposedChart>
-          </ChartContainer>
+                <Area
+                  type="monotone"
+                  dataKey="views"
+                  stroke="#8b5cf6"
+                  strokeWidth={3}
+                  name="بازدیدها"
+                  fillOpacity={1}
+                  fill="url(#colorViews)"
+                  dot={{
+                    r: 6,
+                    strokeWidth: 2,
+                    fill: "#1e1e1e",
+                    stroke: "#8b5cf6",
+                  }}
+                  activeDot={{
+                    r: 8,
+                    strokeWidth: 2,
+                    fill: "#8b5cf6",
+                    stroke: "#fff",
+                  }}
+                  animationDuration={2000}
+                />
+              </ComposedChart>
+            </ChartContainer>
+          </ResponsiveContainer>
         </div>
 
         <div className="flex justify-between mt-4 text-sm text-gray-400">
