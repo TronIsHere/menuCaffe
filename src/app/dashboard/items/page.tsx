@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import EditDialog from "@/components/dialogs/editDialog";
 import { IoMdAdd } from "react-icons/io";
+import Link from "next/link";
 
 const itemsPage: NextPage = () => {
   return (
@@ -27,11 +28,12 @@ const itemsPage: NextPage = () => {
             </Button>
           }
         />
-
-        <Button variant="outline">
-          <FaEye />
-          پیش نمایش منو
-        </Button>
+        <Link href={"/menu"} className="flex">
+          <Button variant="outline">
+            <FaEye />
+            پیش نمایش منو
+          </Button>
+        </Link>
       </div>
       <Table className="mt-5">
         <TableCaption className="pt-10"> لیست محصولات 🍮</TableCaption>

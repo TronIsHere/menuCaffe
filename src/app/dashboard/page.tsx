@@ -7,6 +7,7 @@ import { FaArrowLeft, FaEye, FaPlusCircle } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 
 import ViewChart from "@/components/dashboard/viewChart";
+import Link from "next/link";
 
 const DashboardPage: NextPage = () => {
   return (
@@ -47,10 +48,12 @@ const DashboardPage: NextPage = () => {
             <FaPlusCircle />
             افزودن پیشنهاد ویژه
           </Button>
-          <Button variant="outline">
-            <FaEye />
-            پیش نمایش منو
-          </Button>
+          <Link href={"/menu"} className="flex">
+            <Button variant="outline">
+              <FaEye />
+              پیش نمایش منو
+            </Button>
+          </Link>
         </div>
       </div>
       <div>
