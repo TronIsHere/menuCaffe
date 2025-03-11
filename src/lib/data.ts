@@ -1,3 +1,5 @@
+import { Offer } from "@/types/offer-types";
+
 export const categoryIcons = [
   "/img/categoryIcons/bread.png",
   "/img/categoryIcons/breakfast.png",
@@ -26,3 +28,52 @@ export const categoryIcons = [
   "/img/categoryIcons/special.png",
   "/img/categoryIcons/tea.png",
 ];
+export const OFFER_DATA: Offer[] = [
+  {
+    id: 1,
+    title: "صبحانه خانوادگی",
+    type: "bundle",
+    discount: "15%",
+    includes: ["قهوه اسپرسو", "کیک شکلاتی", "کراسان"],
+    startDate: "۱۴۰۴/۰۱/۰۱",
+    endDate: "۱۴۰۴/۰۱/۳۰",
+    status: "active",
+  },
+  {
+    id: 2,
+    title: "تخفیف کاپوچینو",
+    type: "item",
+    discount: "۱۰٫۰۰۰ تومان",
+    includes: ["کاپوچینو"],
+    startDate: "۱۴۰۴/۰۱/۰۵",
+    endDate: "۱۴۰۴/۰۱/۱۵",
+    status: "active",
+  },
+  {
+    id: 3,
+    title: "چای و کیک",
+    type: "bundle",
+    discount: "20%",
+    includes: ["چای ماسالا", "کیک زنجبیلی"],
+    startDate: "۱۴۰۴/۰۱/۱۰",
+    endDate: "۱۴۰۴/۰۲/۱۰",
+    status: "scheduled",
+  },
+  {
+    id: 4,
+    title: "تخفیف نوشیدنی‌های سرد",
+    type: "category",
+    discount: "25%",
+    includes: ["همه نوشیدنی‌های سرد"],
+    startDate: "۱۴۰۳/۱۲/۱۰",
+    endDate: "۱۴۰۳/۱۲/۲۹",
+    status: "expired",
+  },
+];
+
+export const OFFER_TYPE_COUNT = {
+  item: 2,
+  bundle: 3,
+  category: 1,
+  total: 6,
+};
