@@ -1,20 +1,18 @@
+"use client";
+
 import Sidebar from "@/components/sidebar";
 import type { Metadata } from "next";
+import { ReactNode } from "react";
 
-export const metadata: Metadata = {
-  title: "Dashboard | Your App Name",
-  description: "Your dashboard description",
-};
+interface DashboardLayoutProps {
+  children: ReactNode;
+}
 
-export default function DashboardLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="flex flex-col md:flex-row min-h-screen dark" dir="rtl">
       <Sidebar />
-      <main className="flex-[8] min-h-[300px] bg-darkPrimary">
+      <main className="flex-[8] min-h-[300px] bg-darkPrimary w-full md:w-auto">
         <div className="bg-darkSecondary min-h-[73px] border-r border-b flex items-center justify-end px-7 dark:text-white">
           <div className="flex gap-3 items-center">
             <div className="flex-col">
