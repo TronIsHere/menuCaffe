@@ -1,5 +1,6 @@
 "use client";
 
+import OrderComponent from "@/components/orders";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -82,7 +83,7 @@ const menuCategories = [
         name: "لاته",
         price: 50000,
         image:
-          "https://images.unsplash.com/photo-1497636577773-f1231844b336?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Dص",
+          "https://images.unsplash.com/photo-1497636577773-f1231844b336?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         id: 4,
@@ -186,9 +187,48 @@ const menuCategories = [
   },
 ];
 
+// Define item type for TypeScript
+interface MenuItem {
+  id: number;
+  name?: string;
+  title?: string;
+  price?: number;
+  regularPrice?: number;
+  discountedPrice?: number;
+  isDiscounted?: boolean;
+  image: string;
+  description?: string;
+  type?: string;
+  includes?: Array<{ name: string; quantity: number }>;
+}
+
+// Helper function to add item to cart
+const addToCart = (item: MenuItem) => {
+  // Create a custom event with the item data
+  // Make sure we're handling both regular items and special offers consistently
+  const itemToAdd = {
+    id: item.id,
+    name: item.name || item.title || "",
+    price: item.price || item.regularPrice || 0,
+    regularPrice: item.regularPrice,
+    discountedPrice: item.discountedPrice,
+    isDiscounted: item.isDiscounted || item.discountedPrice !== undefined,
+    image: item.image,
+    quantity: 1, // Default quantity
+    // Keep original properties
+    type: item.type,
+    description: item.description,
+    includes: item.includes,
+  };
+
+  const event = new CustomEvent("addToCart", { detail: itemToAdd });
+  window.dispatchEvent(event);
+};
+
 const MenuPage = () => {
   const [activeCategory, setActiveCategory] = useState<string>("offers");
   const [isScrolled, setIsScrolled] = useState(false);
+  const [addedItems, setAddedItems] = useState<Set<number>>(new Set());
 
   // Handle scroll behavior for sticky header
   useEffect(() => {
@@ -209,6 +249,23 @@ const MenuPage = () => {
     activeCategory === "offers"
       ? []
       : menuCategories.find((cat) => cat.id === activeCategory)?.items || [];
+
+  // Handle add to cart animation
+  const handleAddToCart = (item: any) => {
+    addToCart(item);
+
+    // Add item ID to the set of added items for animation
+    setAddedItems(new Set(addedItems.add(item.id)));
+
+    // Remove animation class after animation completes
+    setTimeout(() => {
+      setAddedItems((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(item.id);
+        return newSet;
+      });
+    }, 1000);
+  };
 
   return (
     <div className="min-h-screen bg-darkPrimary text-white font-iran-sans-regular">
@@ -298,7 +355,7 @@ const MenuPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="bg-darkSecondary rounded-xl overflow-hidden border border-stone-700 shadow-lg flex flex-col h-full" // Added flex flex-col and h-full
+                    className="bg-darkSecondary rounded-xl overflow-hidden border border-stone-700 shadow-lg flex flex-col h-full"
                   >
                     <div className="relative h-48">
                       <div
@@ -310,11 +367,7 @@ const MenuPage = () => {
                       </div>
                     </div>
                     <div className="p-4 flex-1 flex flex-col">
-                      {" "}
-                      {/* Added flex-1 and flex flex-col */}
                       <div className="flex-1">
-                        {" "}
-                        {/* This div contains the flexible content */}
                         <h3 className="text-xl font-bold">{offer.title}</h3>
                         <p className="text-stone-300 text-sm mt-1">
                           {offer.description}
@@ -336,8 +389,6 @@ const MenuPage = () => {
                         )}
                       </div>
                       <div className="mt-4 flex justify-between items-center pt-4 border-stone-700">
-                        {" "}
-                        {/* Added border-t for visual separation */}
                         <div>
                           <span className="text-stone-400 line-through text-sm">
                             {offer.regularPrice.toLocaleString()} تومان
@@ -346,8 +397,15 @@ const MenuPage = () => {
                             {offer.discountedPrice.toLocaleString()} تومان
                           </div>
                         </div>
-                        <button className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
-                          سفارش
+                        <button
+                          className={`bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors ${
+                            addedItems.has(offer.id)
+                              ? "animate-pulse bg-success-400"
+                              : ""
+                          }`}
+                          onClick={() => handleAddToCart(offer)}
+                        >
+                          {addedItems.has(offer.id) ? "اضافه شد" : "سفارش"}
                         </button>
                       </div>
                     </div>
@@ -393,8 +451,6 @@ const MenuPage = () => {
 
                       <div className="mt-4 flex justify-between items-center pt-4 ">
                         <div className="flex flex-col h-14 justify-end">
-                          {" "}
-                          {/* Fixed height container for price */}
                           {item.isDiscounted ? (
                             <>
                               <span className="text-stone-400 line-through text-sm">
@@ -406,14 +462,19 @@ const MenuPage = () => {
                             </>
                           ) : (
                             <div className="text-xl font-bold text-white mt-auto">
-                              {" "}
-                              {/* Added mt-auto to push to bottom */}
                               {item.price.toLocaleString()} تومان
                             </div>
                           )}
                         </div>
-                        <button className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg mt-4 transition-colors">
-                          سفارش
+                        <button
+                          className={`bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors ${
+                            addedItems.has(item.id)
+                              ? "animate-pulse bg-success-400"
+                              : ""
+                          }`}
+                          onClick={() => handleAddToCart(item)}
+                        >
+                          {addedItems.has(item.id) ? "اضافه شد" : "سفارش"}
                         </button>
                       </div>
                     </div>
@@ -424,6 +485,9 @@ const MenuPage = () => {
           )}
         </div>
       </main>
+
+      {/* Order Component */}
+      <OrderComponent />
 
       {/* Footer */}
       <footer className="bg-darkSecondary py-8 mt-12">

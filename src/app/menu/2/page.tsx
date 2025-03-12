@@ -17,6 +17,7 @@ import {
   IoStarOutline,
   IoCloseOutline,
 } from "react-icons/io5";
+import OrderComponent from "@/components/orders";
 
 // Define interfaces for data structures
 interface ItemInclude {
@@ -517,7 +518,7 @@ const AlternativeMenuPage = () => {
       </main>
 
       {/* Footer */}
-      <footer className="fixed bottom-0 w-full bg-white border-t border-gray-200 shadow-lg py-3 px-4 z-20">
+      {/* <footer className="fixed bottom-0 w-full bg-white border-t border-gray-200 shadow-lg py-3 px-4 z-20">
         <div className="flex justify-around items-center max-w-md mx-auto">
           <a
             href="#"
@@ -543,7 +544,7 @@ const AlternativeMenuPage = () => {
             <span className="text-xs">علاقه‌مندی‌ها</span>
           </a>
         </div>
-      </footer>
+      </footer> */}
 
       {/* Item detail modal */}
       <ItemModal
