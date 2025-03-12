@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FaQrcode } from "react-icons/fa";
+import QRCode from "react-qr-code";
 
 export default function SettingsPage() {
   const [editProfile, setEditProfile] = useState(false);
@@ -455,7 +456,17 @@ export default function SettingsPage() {
 
                   <div className="md:w-1/3 flex flex-col items-center justify-start bg-white p-8 rounded-lg">
                     <div className="bg-black p-8 rounded-lg mb-4">
-                      <img
+                      <QRCode
+                        size={256}
+                        style={{
+                          height: "auto",
+                          maxWidth: "100%",
+                          width: "100%",
+                        }}
+                        value={"www.google.com"}
+                        viewBox={`0 0 256 256`}
+                      />
+                      {/* <img
                         src="/img/qr-sample.png"
                         alt="QR Code"
                         className="w-48 h-48"
@@ -463,7 +474,7 @@ export default function SettingsPage() {
                           e.currentTarget.src =
                             "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://menucafe.example.com";
                         }}
-                      />
+                      /> */}
                     </div>
                     <div className="space-y-2 w-full">
                       <Button variant="outline" className="w-full">
