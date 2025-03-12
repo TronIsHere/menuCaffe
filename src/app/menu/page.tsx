@@ -218,22 +218,11 @@ const MenuPage = () => {
           isScrolled ? "fixed top-0 left-0 right-0 shadow-lg" : ""
         }`}
       >
-        <div className="container mx-auto py-4 px-6 flex justify-between items-center">
-          <h1 className="font-morabba-bold text-3xl">مِنو کافه</h1>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/about"
-              className="hover:text-primary-300 transition-colors"
-            >
-              درباره ما
-            </Link>
-            <Link
-              href="/contact"
-              className="hover:text-primary-300 transition-colors"
-            >
-              تماس
-            </Link>
-          </div>
+        <div
+          className="container mx-auto py-2 px-6 flex justify-center items-center"
+          dir="rtl"
+        >
+          <h1 className="font-morabba-bold text-3xl  mt-4">مِنو کافه رز</h1>
         </div>
       </header>
 
@@ -309,7 +298,7 @@ const MenuPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="bg-darkSecondary rounded-xl overflow-hidden border border-stone-700 shadow-lg"
+                    className="bg-darkSecondary rounded-xl overflow-hidden border border-stone-700 shadow-lg flex flex-col h-full" // Added flex flex-col and h-full
                   >
                     <div className="relative h-48">
                       <div
@@ -320,29 +309,35 @@ const MenuPage = () => {
                         {offer.discount} تخفیف
                       </div>
                     </div>
-                    <div className="p-4">
-                      <h3 className="text-xl font-bold">{offer.title}</h3>
-                      <p className="text-stone-300 text-sm mt-1">
-                        {offer.description}
-                      </p>
-
-                      {offer.type === "bundle" && offer.includes && (
-                        <div className="mt-3 text-sm">
-                          <p className="text-stone-400 mb-1">شامل:</p>
-                          <ul className="space-y-1">
-                            {offer.includes.map((item, idx) => (
-                              <li key={idx} className="flex items-center">
-                                <span className="bg-primary-500/20 text-primary-300 rounded-full w-5 h-5 flex items-center justify-center text-xs ml-2">
-                                  {item.quantity}
-                                </span>
-                                {item.name}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                      <div className="mt-4 flex justify-between items-center">
+                    <div className="p-4 flex-1 flex flex-col">
+                      {" "}
+                      {/* Added flex-1 and flex flex-col */}
+                      <div className="flex-1">
+                        {" "}
+                        {/* This div contains the flexible content */}
+                        <h3 className="text-xl font-bold">{offer.title}</h3>
+                        <p className="text-stone-300 text-sm mt-1">
+                          {offer.description}
+                        </p>
+                        {offer.type === "bundle" && offer.includes && (
+                          <div className="mt-3 text-sm">
+                            <p className="text-stone-400 mb-1">شامل:</p>
+                            <ul className="space-y-1">
+                              {offer.includes.map((item, idx) => (
+                                <li key={idx} className="flex items-center">
+                                  <span className="bg-primary-500/20 text-primary-300 rounded-full w-5 h-5 flex items-center justify-center text-xs ml-2">
+                                    {item.quantity}
+                                  </span>
+                                  {item.name}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                      <div className="mt-4 flex justify-between items-center pt-4 border-stone-700">
+                        {" "}
+                        {/* Added border-t for visual separation */}
                         <div>
                           <span className="text-stone-400 line-through text-sm">
                             {offer.regularPrice.toLocaleString()} تومان
@@ -377,7 +372,7 @@ const MenuPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="bg-darkSecondary rounded-xl overflow-hidden border border-stone-700 shadow-lg"
+                    className="bg-darkSecondary rounded-xl overflow-hidden border border-stone-700 shadow-lg flex flex-col h-full"
                   >
                     <div className="relative h-48">
                       <div
@@ -390,11 +385,16 @@ const MenuPage = () => {
                         </div>
                       )}
                     </div>
-                    <div className="p-4">
-                      <h3 className="text-xl font-bold">{item.name}</h3>
+                    <div className="p-4 flex-1 flex flex-col">
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold">{item.name}</h3>
+                        {/* Additional content could go here */}
+                      </div>
 
-                      <div className="mt-4 flex justify-between items-center">
-                        <div>
+                      <div className="mt-4 flex justify-between items-center pt-4 ">
+                        <div className="flex flex-col h-14 justify-end">
+                          {" "}
+                          {/* Fixed height container for price */}
                           {item.isDiscounted ? (
                             <>
                               <span className="text-stone-400 line-through text-sm">
@@ -405,12 +405,14 @@ const MenuPage = () => {
                               </div>
                             </>
                           ) : (
-                            <div className="text-xl font-bold text-white">
+                            <div className="text-xl font-bold text-white mt-auto">
+                              {" "}
+                              {/* Added mt-auto to push to bottom */}
                               {item.price.toLocaleString()} تومان
                             </div>
                           )}
                         </div>
-                        <button className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        <button className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg mt-4 transition-colors">
                           سفارش
                         </button>
                       </div>
