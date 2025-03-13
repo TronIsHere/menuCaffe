@@ -48,8 +48,8 @@ const DashboardPage: NextPage = () => {
             <FaPlusCircle />
             افزودن پیشنهاد ویژه
           </Button>
-          <Link href={"/menu"} className="flex">
-            <Button variant="outline">
+          <Link href={"/menu"}>
+            <Button variant="outline" className="w-full">
               <FaEye />
               پیش نمایش منو
             </Button>

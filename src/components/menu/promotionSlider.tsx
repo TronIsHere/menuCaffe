@@ -16,20 +16,9 @@ import {
   FiPercent,
   FiArrowRight,
 } from "react-icons/fi";
+import { Promotion } from "@/types/menu-types";
 
 // Define types for promotions
-interface Promotion {
-  id: number;
-  title: string;
-  description: string;
-  regularPrice: number | null;
-  discountedPrice: number | null;
-  discount: string;
-  image: string;
-  backgroundColor: string;
-  accentColor: string;
-  endDate: string | null;
-}
 
 // Define props for the carousel component
 interface PromotionsCarouselProps {

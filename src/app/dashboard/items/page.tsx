@@ -56,7 +56,7 @@ const itemsPage: NextPage = () => {
                       alt="کاپوچینو"
                       className="w-8 h-8 object-cover rounded-sm"
                     />
-                    <span className="flex items-center">کاپوچینو</span>
+                    <span className="flex items-center">فرامپاچینو و کیک</span>
                   </div>
                 </TableCell>
                 <TableCell>نوشیدنی گرم</TableCell>

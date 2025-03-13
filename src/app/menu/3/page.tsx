@@ -11,6 +11,7 @@ import {
   FiTrash2,
 } from "react-icons/fi";
 import PromotionsCarousel from "@/components/menu/promotionSlider";
+import { Promotion } from "@/types/menu-types";
 
 // Simple type definitions
 interface MenuItem {
@@ -36,7 +37,7 @@ const categories = [
 ];
 
 // Sample menu items
-const specialPromotions = [
+const specialPromotions: Promotion[] = [
   {
     id: 1,
     title: "پکیج صبحانه خانوادگی",
@@ -49,23 +50,13 @@ const specialPromotions = [
   },
   {
     id: 2,
-    title: "کاپوچینو ویژه",
-    description: "کاپوچینو با خامه مخصوص و دارچین تازه",
+    title: "کیک شکلاتی",
+    description: "کیک شکلاتی با خامه تازه تولید روز",
     regularPrice: 45000,
     discountedPrice: 35000,
-    image: "https://images.unsplash.com/photo-1572286258217-215223af50e7?w=600",
+    image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400",
     badge: "۱۰٫۰۰۰ تومان تخفیف",
     endDate: "۱۴۰۴/۰۱/۱۵",
-  },
-  {
-    id: 3,
-    title: "تخفیف میان‌روزی",
-    description: "در ساعات ۱۵ تا ۱۷ از ۱۰٪ تخفیف بهره‌مند شوید",
-    regularPrice: null,
-    discountedPrice: null,
-    image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600",
-    badge: "تخفیف روزانه",
-    endDate: null,
   },
 ];
 const menuItems: MenuItem[] = [
