@@ -1,20 +1,25 @@
-import React from "react";
-
+import FaqItem from "@/components/landing/faqItems";
+import FeatureCard from "@/components/landing/featureCard";
+import PricingCard from "@/components/landing/pricingCard";
+import StepCard from "@/components/landing/stepCard";
+import TestimonialCard from "@/components/landing/testimonialCard";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
+  BarChart,
+  Calendar,
+  CheckCircle,
   ChevronRight,
   Coffee,
-  Package,
-  ShoppingBag,
-  BarChart,
+  Instagram,
+  Linkedin,
+  MapPin,
   MessageSquare,
-  Calendar,
   Monitor,
-  CheckCircle,
-  Star,
+  Package,
+  Phone,
+  ShoppingBag,
+  Twitter,
 } from "lucide-react";
-import { motion } from "framer-motion";
 
 export default function Home() {
   return (
@@ -97,22 +102,22 @@ export default function Home() {
                 <span>۱۴ روز رایگان، بدون نیاز به کارت بانکی</span>
               </div>
             </div>
-
-            <div className="relative hidden md:block">
-              <div className="relative bg-darkSecondary p-4 rounded-xl border border-stone-700 shadow-xl overflow-hidden">
-                <img
-                  src="/img/land.png"
-                  alt="منو کافه داشبورد"
-                  className="rounded-lg border border-stone-700 w-full"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-darkPrimary to-transparent opacity-10"></div>
-              </div>
-              <div className="absolute -left-6 -bottom-6 bg-primary-500 text-white px-6 py-3 rounded-lg shadow-lg transform rotate-6">
-                +۲۸٪ افزایش فروش
+            <div className="flex justify-center w-full md:block">
+              <div className="relative  w-11/12 md:flex justify-center border ">
+                <div className="relative bg-darkSecondary p-4 rounded-xl border border-stone-700 shadow-xl overflow-hidden">
+                  <img
+                    src="/img/land.png"
+                    alt="منو کافه داشبورد"
+                    className="rounded-lg border border-stone-700 w-full"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-darkPrimary to-transparent opacity-10"></div>
+                </div>
+                <div className="absolute -left-6 -bottom-6 bg-primary-500 text-white px-6 py-3 rounded-lg shadow-lg transform rotate-6">
+                  +۲۸٪ افزایش فروش
+                </div>
               </div>
             </div>
           </div>
-
           <div className="container mx-auto px-4 mt-20">
             <div className="border-t border-stone-800 pt-10">
               <p className="text-center text-stone-400 mb-8">
@@ -666,251 +671,3 @@ export default function Home() {
     </div>
   );
 }
-
-// Component for the Phone icon in contact section
-const Phone = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-    </svg>
-  );
-};
-
-// Component for the MapPin icon in contact section
-const MapPin = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-  );
-};
-
-// Component for social media icons
-const Instagram = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-    </svg>
-  );
-};
-
-const Twitter = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-    </svg>
-  );
-};
-
-const Linkedin = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-      <rect x="2" y="9" width="4" height="12" />
-      <circle cx="4" cy="4" r="2" />
-    </svg>
-  );
-};
-
-// Feature Card Component
-const FeatureCard = ({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) => {
-  return (
-    <div className="bg-darkPrimary p-6 rounded-xl border border-stone-700 hover:border-primary-500/50 transition-colors">
-      <div className="mb-4">{icon}</div>
-      <h3 className="font-bold text-xl mb-2">{title}</h3>
-      <p className="text-stone-300">{description}</p>
-    </div>
-  );
-};
-
-// Step Card Component
-const StepCard = ({
-  number,
-  title,
-  description,
-}: {
-  number: string;
-  title: string;
-  description: string;
-}) => {
-  return (
-    <div className="bg-darkSecondary p-6 rounded-xl border border-stone-700 relative">
-      <div className="absolute top-4 left-4 bg-primary-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">
-        {number}
-      </div>
-      <h3 className="font-bold text-xl mb-4 mt-2">{title}</h3>
-      <p className="text-stone-300">{description}</p>
-    </div>
-  );
-};
-interface PricingCardProps {
-  title: string;
-  price: string;
-  period: string;
-  description: string;
-  features: string[];
-  buttonText: string;
-  featured: boolean;
-}
-
-// Pricing Card Component
-const PricingCard = ({
-  title,
-  price,
-  period,
-  description,
-  features,
-  buttonText,
-  featured,
-}: PricingCardProps) => {
-  return (
-    <div
-      className={`bg-darkPrimary rounded-xl overflow-hidden border ${
-        featured
-          ? "border-primary-500 shadow-lg shadow-primary-500/10"
-          : "border-stone-700"
-      } flex flex-col h-full`}
-    >
-      {featured && (
-        <div className="bg-primary-500 py-1 text-center">
-          <span className="text-white text-sm font-bold">پیشنهاد ویژه</span>
-        </div>
-      )}
-      <div className="p-6 flex-1">
-        <h3 className="font-bold text-xl mb-1">{title}</h3>
-        <p className="text-stone-400 text-sm mb-4">{description}</p>
-        <div className="mb-6">
-          <span className="text-3xl font-bold">{price}</span>
-          <span className="text-stone-400"> تومان / {period}</span>
-        </div>
-        <ul className="space-y-3 mb-8">
-          {features.map((feature, index) => (
-            <li key={index} className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5 text-primary-300 flex-shrink-0" />
-              <span>{feature}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="p-6 pt-0">
-        <Button
-          className={`w-full ${
-            featured
-              ? "bg-primary-500 hover:bg-primary-600"
-              : "bg-darkSecondary hover:bg-stone-700"
-          }`}
-          variant={featured ? "default" : "outline"}
-        >
-          {buttonText}
-        </Button>
-      </div>
-    </div>
-  );
-};
-interface TestimonialCardProps {
-  quote: string;
-  author: string;
-  role: string;
-  rating: number;
-}
-// Testimonial Card Component
-const TestimonialCard = ({
-  quote,
-  author,
-  role,
-  rating,
-}: TestimonialCardProps) => {
-  return (
-    <div className="bg-darkSecondary p-6 rounded-xl border border-stone-700">
-      <div className="flex mb-3">
-        {[...Array(5)].map((_, i) => (
-          <Star
-            key={i}
-            className={`h-4 w-4 ${
-              i < rating ? "text-amber-400" : "text-stone-600"
-            }`}
-          />
-        ))}
-      </div>
-      <p className="text-stone-300 mb-6">"{quote}"</p>
-      <div>
-        <p className="font-bold">{author}</p>
-        <p className="text-stone-400 text-sm">{role}</p>
-      </div>
-    </div>
-  );
-};
-interface FaqItemProps {
-  question: string;
-  answer: string;
-}
-// FAQ Item Component
-const FaqItem = ({ question, answer }: FaqItemProps) => {
-  return (
-    <div>
-      <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
-        <div className="bg-primary-500/20 text-primary-300 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0">
-          <span className="text-sm">؟</span>
-        </div>
-        {question}
-      </h3>
-      <p className="text-stone-300">{answer}</p>
-    </div>
-  );
-};
