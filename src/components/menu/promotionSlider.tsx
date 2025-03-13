@@ -1,168 +1,299 @@
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+"use client";
 
-// Define types for promotions and the component props
+import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import {
+  FiMenu,
+  FiX,
+  FiShoppingBag,
+  FiPlus,
+  FiMinus,
+  FiTrash2,
+  FiChevronRight,
+  FiChevronLeft,
+  FiClock,
+  FiTag,
+  FiPercent,
+  FiArrowRight,
+} from "react-icons/fi";
+
+// Define types for promotions
 interface Promotion {
   id: number;
   title: string;
   description: string;
+  regularPrice: number | null;
+  discountedPrice: number | null;
+  discount: string;
   image: string;
-  badge?: string;
-  regularPrice?: number | null;
-  discountedPrice?: number | null;
-  endDate?: string | null;
+  backgroundColor: string;
+  accentColor: string;
+  endDate: string | null;
 }
 
+// Define props for the carousel component
 interface PromotionsCarouselProps {
   promotions: Promotion[];
-  onAddToCart: (item: {
-    id: number;
-    name: string;
-    price: number;
-    discountedPrice?: number;
-    image: string;
-    description: string;
-    category: string;
-  }) => void;
+  onAddToCart: (item: any) => void;
 }
 
-// Promotions Carousel Component
-const PromotionsCarousel = ({
+// Enhanced special promotions/offers data
+const specialPromotions: Promotion[] = [
+  {
+    id: 1,
+    title: "پکیج صبحانه خانوادگی",
+    description: "قهوه اسپرسو، کیک شکلاتی و کراسان",
+    regularPrice: 150000,
+    discountedPrice: 127500,
+    discount: "15%",
+    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600",
+    backgroundColor: "#f8f3eb",
+    accentColor: "#8c6c40",
+    endDate: "۱۴۰۴/۰۱/۳۰",
+  },
+  {
+    id: 2,
+    title: "کاپوچینو ویژه",
+    description: "کاپوچینو با خامه مخصوص و دارچین تازه",
+    regularPrice: 45000,
+    discountedPrice: 35000,
+    discount: "۱۰،۰۰۰ تومان",
+    image: "https://images.unsplash.com/photo-1572286258217-215223af50e7?w=600",
+    backgroundColor: "#f4ede5",
+    accentColor: "#a84832",
+    endDate: "۱۴۰۴/۰۱/۱۵",
+  },
+  {
+    id: 3,
+    title: "تخفیف ویژه عصرانه",
+    description: "در ساعات ۱۵ تا ۱۷ از ۱۰٪ تخفیف بهره‌مند شوید",
+    regularPrice: null,
+    discountedPrice: null,
+    discount: "تخفیف روزانه",
+    image: "https://images.unsplash.com/photo-1534040385115-33dcb3acba5b?w=600",
+    backgroundColor: "#eef2f7",
+    accentColor: "#5a7ba0",
+    endDate: null,
+  },
+];
+
+// Redesigned Promotions Carousel Component
+const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
   promotions,
   onAddToCart,
-}: PromotionsCarouselProps) => {
-  const [activeSlide, setActiveSlide] = useState<number>(0);
+}) => {
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const touchStartRef = useRef(0);
 
-  // Auto-rotate slides every 5 seconds
+  // Auto-rotate slides every 6 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % promotions.length);
-    }, 5000);
+      if (!isAnimating) {
+        setIsAnimating(true);
+        setActiveSlide((prev) => (prev + 1) % promotions.length);
+        setTimeout(() => setIsAnimating(false), 500);
+      }
+    }, 6000);
 
     return () => clearInterval(interval);
-  }, [promotions.length]);
+  }, [promotions.length, isAnimating]);
 
   const handlePrev = () => {
-    setActiveSlide(
-      (prev) => (prev - 1 + promotions.length) % promotions.length
-    );
+    if (!isAnimating) {
+      setIsAnimating(true);
+      setActiveSlide(
+        (prev) => (prev - 1 + promotions.length) % promotions.length
+      );
+      setTimeout(() => setIsAnimating(false), 500);
+    }
   };
 
   const handleNext = () => {
-    setActiveSlide((prev) => (prev + 1) % promotions.length);
+    if (!isAnimating) {
+      setIsAnimating(true);
+      setActiveSlide((prev) => (prev + 1) % promotions.length);
+      setTimeout(() => setIsAnimating(false), 500);
+    }
   };
 
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const touchEnd = e.changedTouches[0].clientX;
+    const diff = touchStartRef.current - touchEnd;
+
+    // If swipe distance is significant, change slide
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        // Swipe left, go to next slide
+        handleNext();
+      } else {
+        // Swipe right, go to previous slide
+        handlePrev();
+      }
+    }
+  };
+
+  const promotion = promotions[activeSlide];
+
   return (
-    <div className="mb-8 relative rounded-lg overflow-hidden shadow-md bg-white">
-      {/* Slides */}
-      <div className="relative h-64 sm:h-80">
-        {promotions.map((promotion: Promotion, index: number) => (
-          <motion.div
-            key={promotion.id}
-            className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: index === activeSlide ? 1 : 0 }}
-            transition={{ duration: 0.5 }}
-            style={{ display: index === activeSlide ? "block" : "none" }}
-          >
-            <div className="absolute inset-0 flex">
-              {/* Left content side */}
-              <div className="flex-1 p-6 sm:p-8 flex flex-col justify-center">
-                {promotion.badge && (
-                  <span className="inline-block bg-rose-600 text-white px-2 py-1 text-sm rounded-full mb-3">
-                    {promotion.badge}
-                  </span>
+    <div
+      ref={carouselRef}
+      className="mb-8 rounded-xl overflow-hidden shadow-lg relative"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      <motion.div
+        key={activeSlide}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full h-[600px]"
+        style={{ backgroundColor: promotion.backgroundColor }}
+      >
+        <div className="flex flex-col sm:flex-row">
+          {/* Text content */}
+          <div className="w-full sm:w-1/2 p-5 sm:p-8 flex flex-col h-[300px] justify-center">
+            <div className="flex items-center gap-2 mb-3">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: promotion.accentColor }}
+              >
+                {promotion.regularPrice ? (
+                  <FiPercent className="text-white" />
+                ) : (
+                  <FiTag className="text-white" />
                 )}
-                <h2 className="text-xl sm:text-2xl font-bold mb-2">
-                  {promotion.title}
-                </h2>
-                <p className="text-sm sm:text-base text-stone-600 mb-4">
-                  {promotion.description}
-                </p>
-
-                {promotion.regularPrice !== null && (
-                  <div className="mb-4">
-                    <span className="line-through text-stone-400 text-sm">
-                      {promotion.regularPrice?.toLocaleString()} تومان
-                    </span>
-                    <div className="text-rose-600 font-bold text-lg">
-                      {promotion.discountedPrice?.toLocaleString()} تومان
-                    </div>
-                  </div>
-                )}
-
-                {promotion.endDate && (
-                  <div className="text-sm text-stone-500 mb-4">
-                    اعتبار تا: {promotion.endDate}
-                  </div>
-                )}
-
-                <button
-                  onClick={() =>
-                    promotion.regularPrice !== null &&
-                    onAddToCart({
-                      id: promotion.id,
-                      name: promotion.title,
-                      price: promotion.regularPrice || 0,
-                      discountedPrice: promotion.discountedPrice ?? undefined,
-                      image: promotion.image,
-                      description: promotion.description,
-                      category: "promotion",
-                    })
-                  }
-                  className={`mt-2 bg-rose-600 hover:bg-rose-700 text-white py-2 px-4 rounded-lg w-full sm:w-auto ${
-                    promotion.regularPrice === null
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }`}
-                  disabled={promotion.regularPrice === null}
-                >
-                  {promotion.regularPrice !== null
-                    ? "افزودن به سبد خرید"
-                    : "مشاهده منو"}
-                </button>
               </div>
-
-              {/* Right image side */}
-              <div className="hidden sm:block sm:w-1/2 relative">
-                <img
-                  src={promotion.image}
-                  alt={promotion.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white/20"></div>
-              </div>
+              <span
+                className="text-sm font-medium rounded-full px-3 py-1"
+                style={{
+                  backgroundColor: `${promotion.accentColor}20`,
+                  color: promotion.accentColor,
+                }}
+              >
+                {promotion.discount} تخفیف
+              </span>
             </div>
-          </motion.div>
-        ))}
-      </div>
+
+            <h2
+              className="text-xl sm:text-2xl font-bold mb-2"
+              style={{ color: promotion.accentColor }}
+            >
+              {promotion.title}
+            </h2>
+
+            <p className="text-sm sm:text-base text-stone-600 mb-4 sm:mb-6">
+              {promotion.description}
+            </p>
+
+            {promotion.regularPrice && (
+              <div className="mb-4">
+                <div className="flex items-center gap-3 mb-1">
+                  <span className="line-through text-stone-400 text-sm">
+                    {promotion.regularPrice.toLocaleString()} تومان
+                  </span>
+                  <span className="bg-rose-100 text-rose-600 px-2 py-0.5 text-xs rounded-full">
+                    {promotion.discount}
+                  </span>
+                </div>
+                <div className="text-rose-600 font-bold text-lg">
+                  {promotion.discountedPrice?.toLocaleString()} تومان
+                </div>
+              </div>
+            )}
+
+            {promotion.endDate && (
+              <div className="flex items-center text-sm text-stone-500 mb-4">
+                <FiClock className="ml-1" />
+                <span>اعتبار تا: {promotion.endDate}</span>
+              </div>
+            )}
+
+            <button
+              onClick={() =>
+                promotion.regularPrice &&
+                onAddToCart({
+                  id: `promo-${promotion.id}`,
+                  name: promotion.title,
+                  price: promotion.regularPrice,
+                  discountedPrice: promotion.discountedPrice,
+                  image: promotion.image,
+                  description: promotion.description,
+                  category: "promotion",
+                })
+              }
+              className={`
+                mt-2 px-5 py-2.5 rounded-lg flex items-center justify-center gap-2 text-sm font-bold
+                ${
+                  promotion.regularPrice
+                    ? "bg-rose-600 hover:bg-rose-700 text-white"
+                    : "bg-stone-100 text-stone-700 hover:bg-stone-200"
+                }
+              `}
+            >
+              {promotion.regularPrice ? (
+                <>
+                  افزودن به سبد خرید
+                  <FiShoppingBag />
+                </>
+              ) : (
+                <>
+                  مشاهده منو
+                  <FiArrowRight />
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Image */}
+          <div className="w-full sm:w-1/2 h-48 sm:h-auto relative">
+            <img
+              src={promotion.image}
+              alt={promotion.title}
+              className="w-full h-[400px] object-cover sm:rounded-l-xl"
+            />
+            <div
+              className="absolute inset-0 opacity-30 sm:opacity-50 hidden sm:block"
+              style={{
+                background: `linear-gradient(to left, transparent, ${promotion.backgroundColor})`,
+              }}
+            ></div>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Navigation dots */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-        {promotions.map((_: unknown, index: number) => (
+      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+        {promotions.map((_, index) => (
           <button
             key={index}
             onClick={() => setActiveSlide(index)}
-            className={`w-2.5 h-2.5 rounded-full transition-all ${
-              index === activeSlide ? "bg-rose-600 w-5" : "bg-stone-300"
+            className={`w-2 h-2 rounded-full transition-all ${
+              index === activeSlide ? `w-4 bg-white shadow-md` : "bg-white/50"
             }`}
             aria-label={`پیشنهاد ${index + 1}`}
           />
         ))}
       </div>
 
-      {/* Prev/Next buttons */}
+      {/* Navigation buttons */}
       <button
         onClick={handlePrev}
-        className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/70 hover:bg-white text-stone-800 p-2 rounded-full shadow"
+        className="absolute top-1/2 right-2 -translate-y-1/2 bg-white/80 hover:bg-white text-stone-800 w-8 h-8 flex items-center justify-center rounded-full shadow-md z-10"
         aria-label="قبلی"
       >
         <FiChevronRight size={16} />
       </button>
       <button
         onClick={handleNext}
-        className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/70 hover:bg-white text-stone-800 p-2 rounded-full shadow"
+        className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/80 hover:bg-white text-stone-800 w-8 h-8 flex items-center justify-center rounded-full shadow-md z-10"
         aria-label="بعدی"
       >
         <FiChevronLeft size={16} />
@@ -170,4 +301,6 @@ const PromotionsCarousel = ({
     </div>
   );
 };
+
+export { PromotionsCarousel, specialPromotions };
 export default PromotionsCarousel;
