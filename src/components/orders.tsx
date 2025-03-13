@@ -30,9 +30,15 @@ const OrderComponent = () => {
   useEffect(() => {
     const handleAddToCart = (event: CustomEvent) => {
       const item = event.detail;
+      setOrderPlaced(false);
+      setOrderNumber(null);
+
       setOrderItems((prevItems) => {
-        // Check if the item already exists in the cart
-        const existingItemIndex = prevItems.findIndex((i) => i.id === item.id);
+        // Check if the item already exists in the cart by comparing IDs correctly
+        // Make sure to convert the IDs to strings to ensure consistent comparison
+        const existingItemIndex = prevItems.findIndex(
+          (i) => String(i.id) === String(item.id)
+        );
 
         if (existingItemIndex >= 0) {
           // Item exists, increment quantity
@@ -87,6 +93,10 @@ const OrderComponent = () => {
           })
           .filter((item) => item.quantity > 0) // Remove items with quantity 0
     );
+
+    // Reset order state when quantities are modified
+    setOrderPlaced(false);
+    setOrderNumber(null);
   };
 
   // Handle order placement
@@ -103,14 +113,20 @@ const OrderComponent = () => {
       setOrderPlaced(false);
       setOrderItems([]);
       setIsCartOpen(false);
-    }, 3000);
+    }, 20000);
+  };
+  const openCart = () => {
+    // Reset order state when cart is opened
+    setOrderPlaced(false);
+    setOrderNumber(null);
+    setIsCartOpen(true);
   };
 
   return (
     <div className="relative z-30">
       {/* Shopping Cart Button */}
       <button
-        onClick={() => setIsCartOpen(true)}
+        onClick={() => openCart()}
         className="fixed bottom-6 left-6 bg-primary-500 text-white p-4 rounded-full shadow-lg hover:bg-primary-600 transition-colors"
       >
         <FaShoppingBag size={24} />
@@ -294,13 +310,13 @@ const OrderComponent = () => {
                     )}
                   </button>
 
-                  {orderPlaced && orderNumber && (
+                  {orderPlaced && (
                     <div className="mt-4 p-3 bg-success-500/20 border border-success-500/30 rounded-lg text-center">
                       <p className="text-success-400 text-sm">
-                        شماره سفارش: {orderNumber}
+                        باریستاتو صدا کن!
                       </p>
                       <p className="text-stone-400 text-xs mt-1">
-                        لطفاً شماره سفارش خود را به باریستا اعلام کنید
+                        لطفاً سفارش خود را به باریستا نشون بدید
                       </p>
                     </div>
                   )}

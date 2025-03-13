@@ -69,7 +69,7 @@ export default function Sidebar() {
     <>
       {/* Mobile hamburger button */}
       <button
-        className="md:hidden fixed top-4 right-4 z-50 bg-darkSecondary p-2 rounded-md border border-stone-700"
+        className="md:hidden fixed top-4 left-4 z-50 bg-darkSecondary p-2 rounded-md border border-stone-700"
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       >
         {isMobileMenuOpen ? (
