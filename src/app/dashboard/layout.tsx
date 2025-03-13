@@ -13,7 +13,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="flex flex-col md:flex-row min-h-screen dark" dir="rtl">
       <Sidebar />
       <main className="flex-[8] min-h-[300px] bg-darkPrimary w-full md:w-auto">
-        <div className="bg-darkSecondary min-h-[73px] border-r border-b flex items-center justify-end px-7 dark:text-white">
+        <div className="bg-darkSecondary min-h-[73px] border-r border-b flex items-center justify-start md:justify-end px-7 dark:text-white">
           <div className="flex gap-3 items-center">
             <div className="flex-col">
               <span className="font-iran-sans-regular text-sm">پلوتو</span>
