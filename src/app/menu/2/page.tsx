@@ -491,7 +491,7 @@ const AlternativeMenuPage = () => {
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <MdLocalCafe size={24} />
-            <h1 className="font-morabba-bold text-xl">مِنو کافه</h1>
+            <h1 className="font-morabba-bold text-xl mt-2">مِنو کافه</h1>
           </div>
 
           <button className="bg-white text-amber-600 px-4 py-1 rounded-full text-sm font-iran-sans-bold">
