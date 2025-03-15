@@ -3,68 +3,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import {
-  FiMenu,
-  FiX,
   FiShoppingBag,
-  FiPlus,
-  FiMinus,
-  FiTrash2,
-  FiChevronRight,
-  FiChevronLeft,
   FiClock,
   FiTag,
   FiPercent,
   FiArrowRight,
+  FiChevronRight,
+  FiChevronLeft,
 } from "react-icons/fi";
-import { Promotion } from "@/types/menu-types";
+import { PromotionItem } from "@/types/menu-types";
+import { createAddToCartEvent } from "@/lib/utils";
 
-// Define types for promotions
+// Import the types from our shared data module
 
 // Define props for the carousel component
 interface PromotionsCarouselProps {
-  promotions: Promotion[];
-  onAddToCart: (item: any) => void;
+  promotions: PromotionItem[];
+  onAddToCart?: (item: PromotionItem) => void;
 }
-
-// Enhanced special promotions/offers data
-const specialPromotions: Promotion[] = [
-  {
-    id: 1,
-    title: "پکیج صبحانه خانوادگی",
-    description: "قهوه اسپرسو، کیک شکلاتی و کراسان",
-    regularPrice: 150000,
-    discountedPrice: 127500,
-    discount: "15%",
-    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600",
-    backgroundColor: "#f8f3eb",
-    accentColor: "#8c6c40",
-    endDate: "۱۴۰۴/۰۱/۳۰",
-  },
-  {
-    id: 2,
-    title: "کاپوچینو ویژه",
-    description: "کاپوچینو با خامه مخصوص و دارچین تازه",
-    regularPrice: 45000,
-    discountedPrice: 35000,
-    discount: "۱۰،۰۰۰ تومان",
-    image: "https://images.unsplash.com/photo-1572286258217-215223af50e7?w=600",
-    backgroundColor: "#f4ede5",
-    accentColor: "#a84832",
-    endDate: "۱۴۰۴/۰۱/۱۵",
-  },
-  {
-    id: 3,
-    title: "تخفیف ویژه عصرانه",
-    description: "در ساعات ۱۵ تا ۱۷ از ۱۰٪ تخفیف بهره‌مند شوید",
-    regularPrice: null,
-    discountedPrice: null,
-    discount: "تخفیف روزانه",
-    image: "https://images.unsplash.com/photo-1534040385115-33dcb3acba5b?w=600",
-    backgroundColor: "#eef2f7",
-    accentColor: "#5a7ba0",
-    endDate: null,
-  },
-];
 
 // Redesigned Promotions Carousel Component
 const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
@@ -79,7 +35,7 @@ const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
   // Auto-rotate slides every 6 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isAnimating) {
+      if (!isAnimating && promotions.length > 1) {
         setIsAnimating(true);
         setActiveSlide((prev) => (prev + 1) % promotions.length);
         setTimeout(() => setIsAnimating(false), 500);
@@ -90,7 +46,7 @@ const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
   }, [promotions.length, isAnimating]);
 
   const handlePrev = () => {
-    if (!isAnimating) {
+    if (!isAnimating && promotions.length > 1) {
       setIsAnimating(true);
       setActiveSlide(
         (prev) => (prev - 1 + promotions.length) % promotions.length
@@ -100,7 +56,7 @@ const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
   };
 
   const handleNext = () => {
-    if (!isAnimating) {
+    if (!isAnimating && promotions.length > 1) {
       setIsAnimating(true);
       setActiveSlide((prev) => (prev + 1) % promotions.length);
       setTimeout(() => setIsAnimating(false), 500);
@@ -128,7 +84,22 @@ const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
     }
   };
 
+  // If no promotions are available, return null
+  if (!promotions || promotions.length === 0) {
+    return null;
+  }
+
   const promotion = promotions[activeSlide];
+
+  // Handle cart functionality
+  const handleAddToCart = (promotion: PromotionItem) => {
+    if (onAddToCart) {
+      onAddToCart(promotion);
+    } else {
+      // Use the shared cart functionality by default
+      createAddToCartEvent(promotion);
+    }
+  };
 
   return (
     <div
@@ -143,7 +114,7 @@ const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full h-[600px]"
+        className="w-full h-[600px] md:h-auto"
         style={{ backgroundColor: promotion.backgroundColor }}
       >
         <div className="flex flex-col sm:flex-row">
@@ -206,18 +177,7 @@ const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
             )}
 
             <button
-              onClick={() =>
-                promotion.regularPrice &&
-                onAddToCart({
-                  id: `promo-${promotion.id}`,
-                  name: promotion.title,
-                  price: promotion.regularPrice,
-                  discountedPrice: promotion.discountedPrice,
-                  image: promotion.image,
-                  description: promotion.description,
-                  category: "promotion",
-                })
-              }
+              onClick={() => handleAddToCart(promotion)}
               className={`
                 mt-2 px-5 py-2.5 rounded-lg flex items-center justify-center gap-2 text-sm font-bold
                 ${
@@ -259,37 +219,43 @@ const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
       </motion.div>
 
       {/* Navigation dots */}
-      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
-        {promotions.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setActiveSlide(index)}
-            className={`w-2 h-2 rounded-full transition-all ${
-              index === activeSlide ? `w-4 bg-white shadow-md` : "bg-white/50"
-            }`}
-            aria-label={`پیشنهاد ${index + 1}`}
-          />
-        ))}
-      </div>
+      {promotions.length > 1 && (
+        <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+          {promotions.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setActiveSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all ${
+                index === activeSlide ? `w-4 bg-white shadow-md` : "bg-white/50"
+              }`}
+              aria-label={`پیشنهاد ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
 
-      {/* Navigation buttons */}
-      <button
-        onClick={handlePrev}
-        className="absolute top-1/2 right-2 -translate-y-1/2 bg-white/80 hover:bg-white text-stone-800 w-8 h-8 flex items-center justify-center rounded-full shadow-md z-10"
-        aria-label="قبلی"
-      >
-        <FiChevronRight size={16} />
-      </button>
-      <button
-        onClick={handleNext}
-        className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/80 hover:bg-white text-stone-800 w-8 h-8 flex items-center justify-center rounded-full shadow-md z-10"
-        aria-label="بعدی"
-      >
-        <FiChevronLeft size={16} />
-      </button>
+      {/* Navigation buttons - only show if there's more than one promotion */}
+      {promotions.length > 1 && (
+        <>
+          <button
+            onClick={handlePrev}
+            className="absolute top-1/2 right-2 -translate-y-1/2 bg-white/80 hover:bg-white text-stone-800 w-8 h-8 flex items-center justify-center rounded-full shadow-md z-10"
+            aria-label="قبلی"
+          >
+            <FiChevronRight size={16} />
+          </button>
+          <button
+            onClick={handleNext}
+            className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/80 hover:bg-white text-stone-800 w-8 h-8 flex items-center justify-center rounded-full shadow-md z-10"
+            aria-label="بعدی"
+          >
+            <FiChevronLeft size={16} />
+          </button>
+        </>
+      )}
     </div>
   );
 };
 
-export { PromotionsCarousel, specialPromotions };
+export { PromotionsCarousel };
 export default PromotionsCarousel;

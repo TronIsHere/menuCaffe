@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiMenu,
@@ -9,137 +9,65 @@ import {
   FiPlus,
   FiMinus,
   FiTrash2,
+  FiChevronRight,
+  FiChevronLeft,
 } from "react-icons/fi";
+
+// Import the shared data module
+import { MENU_ITEMS, PROMOTIONS } from "@/lib/menu-data";
+
+// Import promotion slider from components
 import PromotionsCarousel from "@/components/menu/promotionSlider";
-import { Promotion } from "@/types/menu-types";
+import { CATEGORY_IDS, MENU_CATEGORIES } from "@/lib/menu/constants";
+import { createAddToCartEvent } from "@/lib/utils";
 
-// Simple type definitions
-interface MenuItem {
-  id: number;
-  name: string;
-  price: number;
-  discountedPrice?: number;
-  image: string;
-  description?: string;
-  category: string;
-}
-
-interface CartItem extends MenuItem {
-  quantity: number;
-}
-
-// Categories for the menu
-const categories = [
-  { id: "all", name: "همه" },
-  { id: "hot-drinks", name: "نوشیدنی گرم" },
-  { id: "cold-drinks", name: "نوشیدنی سرد" },
-  { id: "desserts", name: "دسرها" },
-];
-
-// Sample menu items
-const specialPromotions: Promotion[] = [
-  {
-    id: 1,
-    title: "پکیج صبحانه خانوادگی",
-    description: "قهوه اسپرسو، کیک شکلاتی و کراسان با ۱۵٪ تخفیف",
-    regularPrice: 150000,
-    discountedPrice: 127500,
-    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600",
-    badge: "۱۵٪ تخفیف",
-    endDate: "۱۴۰۴/۰۱/۳۰",
-  },
-  {
-    id: 2,
-    title: "کیک شکلاتی",
-    description: "کیک شکلاتی با خامه تازه تولید روز",
-    regularPrice: 45000,
-    discountedPrice: 35000,
-    image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400",
-    badge: "۱۰٫۰۰۰ تومان تخفیف",
-    endDate: "۱۴۰۴/۰۱/۱۵",
-  },
-];
-const menuItems: MenuItem[] = [
-  {
-    id: 1,
-    name: "اسپرسو",
-    price: 35000,
-    image: "https://images.unsplash.com/photo-1579992357154-faf4bde95b3d?w=400",
-    description: "قهوه تلخ و غلیظ",
-    category: "hot-drinks",
-  },
-  {
-    id: 2,
-    name: "کاپوچینو",
-    price: 45000,
-    discountedPrice: 38000,
-    image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400",
-    description: "شیر، اسپرسو، فوم شیر",
-    category: "hot-drinks",
-  },
-  {
-    id: 3,
-    name: "لاته",
-    price: 48000,
-    image: "https://images.unsplash.com/photo-1497636577773-f1231844b336?w=400",
-    description: "شیر، اسپرسو",
-    category: "hot-drinks",
-  },
-  {
-    id: 4,
-    name: "آیس لاته",
-    price: 55000,
-    image: "https://images.unsplash.com/photo-1553909489-cd47e0907980?w=400",
-    description: "شیر سرد، اسپرسو و یخ",
-    category: "cold-drinks",
-  },
-  {
-    id: 5,
-    name: "آب پرتقال",
-    price: 40000,
-    image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400",
-    description: "آب پرتقال تازه و طبیعی",
-    category: "cold-drinks",
-  },
-  {
-    id: 6,
-    name: "کیک شکلاتی",
-    price: 65000,
-    image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400",
-    description: "کیک شکلاتی خانگی",
-    category: "desserts",
-  },
-];
-
+// Main component
 const SimpleMenu = () => {
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [activeCategory, setActiveCategory] = useState(CATEGORY_IDS.ALL);
+  const [cartItems, setCartItems] = useState<any[]>([]);
   const [showCart, setShowCart] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
+  // Listen for add to cart events
+  useEffect(() => {
+    const handleAddToCart = (event: CustomEvent) => {
+      const newItem = event.detail;
+
+      setCartItems((prevItems) => {
+        const existingItemIndex = prevItems.findIndex(
+          (i) => String(i.id) === String(newItem.id)
+        );
+
+        if (existingItemIndex >= 0) {
+          // Update quantity if item exists
+          const updatedItems = [...prevItems];
+          updatedItems[existingItemIndex].quantity += 1;
+          return updatedItems;
+        } else {
+          // Add new item
+          return [...prevItems, { ...newItem, quantity: 1 }];
+        }
+      });
+    };
+
+    // Register event listener
+    window.addEventListener("addToCart", handleAddToCart as EventListener);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("addToCart", handleAddToCart as EventListener);
+    };
+  }, []);
+
   // Filter items based on selected category
   const filteredItems =
-    activeCategory === "all"
-      ? menuItems
-      : menuItems.filter((item) => item.category === activeCategory);
+    activeCategory === CATEGORY_IDS.ALL
+      ? MENU_ITEMS
+      : MENU_ITEMS.filter((item) => item.category === activeCategory);
 
   // Add item to cart
-  const addToCart = (item: MenuItem) => {
-    setCartItems((prev) => {
-      const existingIndex = prev.findIndex(
-        (cartItem) => cartItem.id === item.id
-      );
-
-      if (existingIndex >= 0) {
-        // Increase quantity if already in cart
-        const newItems = [...prev];
-        newItems[existingIndex].quantity += 1;
-        return newItems;
-      } else {
-        // Add new item
-        return [...prev, { ...item, quantity: 1 }];
-      }
-    });
+  const addToCart = (item: any) => {
+    createAddToCartEvent(item);
   };
 
   // Remove item from cart
@@ -165,7 +93,7 @@ const SimpleMenu = () => {
   // Calculate cart totals
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cartItems.reduce((sum, item) => {
-    const price = item.discountedPrice || item.price;
+    const price = item.discountedPrice || item.price || item.regularPrice;
     return sum + price * item.quantity;
   }, 0);
 
@@ -182,7 +110,7 @@ const SimpleMenu = () => {
             <FiMenu size={24} />
           </button>
 
-          <h1 className="text-xl font-bold font-morabba-bold mt-4">
+          <h1 className="text-xl font-bold font-morabba-bold mt-2">
             مِنو کافه
           </h1>
 
@@ -227,7 +155,7 @@ const SimpleMenu = () => {
               </div>
 
               <ul className="space-y-2">
-                {categories.map((category) => (
+                {MENU_CATEGORIES.map((category) => (
                   <li key={category.id}>
                     <button
                       onClick={() => {
@@ -256,7 +184,7 @@ const SimpleMenu = () => {
           <>
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black/50 z-30"
               onClick={() => setShowCart(false)}
@@ -309,14 +237,22 @@ const SimpleMenu = () => {
                             {item.discountedPrice ? (
                               <>
                                 <span className="line-through">
-                                  {item.price.toLocaleString()} تومان
+                                  {(
+                                    item.price || item.regularPrice
+                                  ).toLocaleString()}{" "}
+                                  تومان
                                 </span>
                                 <span className="block text-rose-600 font-bold">
                                   {item.discountedPrice.toLocaleString()} تومان
                                 </span>
                               </>
                             ) : (
-                              <span>{item.price.toLocaleString()} تومان</span>
+                              <span>
+                                {(
+                                  item.price || item.regularPrice
+                                ).toLocaleString()}{" "}
+                                تومان
+                              </span>
                             )}
                           </div>
 
@@ -339,8 +275,9 @@ const SimpleMenu = () => {
 
                             <span className="font-bold">
                               {(
-                                (item.discountedPrice || item.price) *
-                                item.quantity
+                                (item.discountedPrice ||
+                                  item.price ||
+                                  item.regularPrice) * item.quantity
                               ).toLocaleString()}{" "}
                               تومان
                             </span>
@@ -371,14 +308,11 @@ const SimpleMenu = () => {
       </AnimatePresence>
 
       <main className="container mx-auto px-4 py-6">
-        <PromotionsCarousel
-          promotions={specialPromotions}
-          onAddToCart={addToCart}
-        />
+        <PromotionsCarousel promotions={PROMOTIONS} onAddToCart={addToCart} />
         {/* Desktop Category Nav */}
         <div className="hidden lg:block mb-8">
           <ul className="flex gap-2">
-            {categories.map((category) => (
+            {MENU_CATEGORIES.map((category) => (
               <li key={category.id}>
                 <button
                   onClick={() => setActiveCategory(category.id)}
@@ -397,7 +331,7 @@ const SimpleMenu = () => {
 
         {/* Mobile Category Tabs */}
         <div className="lg:hidden mb-6 overflow-x-auto flex gap-2">
-          {categories.map((category) => (
+          {MENU_CATEGORIES.map((category) => (
             <button
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
@@ -435,13 +369,13 @@ const SimpleMenu = () => {
 
                 <div className="flex justify-between items-center mt-4">
                   <div>
-                    {item.discountedPrice ? (
+                    {item.isDiscounted ? (
                       <>
                         <span className="line-through text-stone-400 text-sm">
                           {item.price.toLocaleString()} تومان
                         </span>
                         <div className="text-rose-600 font-bold">
-                          {item.discountedPrice.toLocaleString()} تومان
+                          {item.discountedPrice?.toLocaleString()} تومان
                         </div>
                       </>
                     ) : (

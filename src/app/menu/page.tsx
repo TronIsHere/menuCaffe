@@ -4,230 +4,35 @@ import PhoneVerificationDiscount from "@/components/menu/phoneVerification";
 import OrderComponent from "@/components/orders";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaBirthdayCake, FaCocktail, FaHotjar } from "react-icons/fa";
+
+// Import icons
+import { FaHotjar, FaCocktail, FaBirthdayCake } from "react-icons/fa";
 import { IoFastFoodOutline } from "react-icons/io5";
 import { MdLocalOffer } from "react-icons/md";
 
-// Sample offer data (would come from your database)
-const specialOffers = [
-  {
-    id: 1,
-    title: "صبحانه خانوادگی",
-    description: "یک پکیج کامل برای خانواده شامل قهوه، کیک و کراسان",
-    type: "bundle",
-    discount: "15%",
-    regularPrice: 150000,
-    discountedPrice: 127500,
-    includes: [
-      { name: "قهوه اسپرسو", quantity: 2 },
-      { name: "کیک شکلاتی", quantity: 1 },
-      { name: "کراسان", quantity: 2 },
-    ],
-    image:
-      "https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?q=80&w=1349&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 2,
-    title: "کاپوچینو ویژه",
-    description: "با طعم خامه مخصوص و دارچین تازه",
-    type: "item",
-    discount: "۱۰٫۰۰۰ تومان",
-    regularPrice: 45000,
-    discountedPrice: 35000,
-    image:
-      "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 3,
-    title: "چای و کیک",
-    description: "چای ماسالا همراه با کیک زنجبیلی",
-    type: "bundle",
-    discount: "20%",
-    regularPrice: 85000,
-    discountedPrice: 68000,
-    includes: [
-      { name: "چای ماسالا", quantity: 1 },
-      { name: "کیک زنجبیلی", quantity: 1 },
-    ],
-    image:
-      "https://images.unsplash.com/photo-1595080623303-c5ae68d73e92?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-];
+// Import the centralized data
+import {
+  CATEGORY_IDS,
+  MENU_CATEGORIES,
+  OFFERS_CATEGORY,
+} from "@/lib/menu/constants";
+import { MENU_ITEMS, PROMOTIONS } from "@/lib/menu-data";
+import { createAddToCartEvent } from "@/lib/utils";
 
-// Menu categories and items
-const menuCategories = [
-  {
-    id: "hot-drinks",
-    name: "نوشیدنی گرم",
-    icon: <FaHotjar />,
-    items: [
-      {
-        id: 1,
-        name: "اسپرسو",
-        price: 35000,
-        image:
-          "https://images.unsplash.com/photo-1579992357154-faf4bde95b3d?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-      {
-        id: 2,
-        name: "کاپوچینو",
-        price: 45000,
-        image:
-          "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        isDiscounted: true,
-        discountedPrice: 35000,
-      },
-      {
-        id: 3,
-        name: "لاته",
-        price: 50000,
-        image:
-          "https://images.unsplash.com/photo-1497636577773-f1231844b336?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-      {
-        id: 4,
-        name: "موکا",
-        price: 55000,
-        image:
-          "https://images.unsplash.com/photo-1529892485617-25f63cd7b1e9?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-      {
-        id: 5,
-        name: "قهوه ترک",
-        price: 40000,
-        image:
-          "https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-    ],
-  },
-  {
-    id: "cold-drinks",
-    name: "نوشیدنی سرد",
-    icon: <FaCocktail />,
-    items: [
-      {
-        id: 6,
-        name: "آیس لاته",
-        price: 60000,
-        image:
-          "https://images.unsplash.com/photo-1553909489-cd47e0907980?q=80&w=1425&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-      {
-        id: 7,
-        name: "آیس آمریکانو",
-        price: 55000,
-        image:
-          "https://images.unsplash.com/photo-1517959105821-eaf2591984ca?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-      {
-        id: 8,
-        name: "شیک شکلات",
-        price: 70000,
-        image:
-          "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-    ],
-  },
-  {
-    id: "desserts",
-    name: "دسرها",
-    icon: <FaBirthdayCake />,
-    items: [
-      {
-        id: 9,
-        name: "کیک شکلاتی",
-        price: 65000,
-        image:
-          "https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1389&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-      {
-        id: 10,
-        name: "کیک زنجبیلی",
-        price: 55000,
-        image:
-          "https://images.unsplash.com/photo-1621303837174-89787a7d4729?q=80&w=1376&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-      {
-        id: 11,
-        name: "تیرامیسو",
-        price: 75000,
-        image:
-          "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-    ],
-  },
-  {
-    id: "breakfast",
-    name: "صبحانه",
-    icon: <IoFastFoodOutline />,
-    items: [
-      {
-        id: 12,
-        name: "کراسان",
-        price: 40000,
-        image:
-          "https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=1526&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-      {
-        id: 13,
-        name: "املت",
-        price: 80000,
-        image:
-          "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-      {
-        id: 14,
-        name: "صبحانه انگلیسی",
-        price: 120000,
-        image:
-          "https://images.unsplash.com/photo-1588625436591-c6d853288b60?q=80&w=2658&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      },
-    ],
-  },
-];
-
-// Define item type for TypeScript
-interface MenuItem {
-  id: number;
-  name?: string;
-  title?: string;
-  price?: number;
-  regularPrice?: number;
-  discountedPrice?: number;
-  isDiscounted?: boolean;
-  image: string;
-  description?: string;
-  type?: string;
-  includes?: Array<{ name: string; quantity: number }>;
-}
-
-// Helper function to add item to cart
-const addToCart = (item: MenuItem) => {
-  // Create a custom event with the item data
-  // Make sure we're handling both regular items and special offers consistently
-  const itemToAdd = {
-    id: item.id,
-    name: item.name || item.title || "",
-    price: item.price || item.regularPrice || 0,
-    regularPrice: item.regularPrice,
-    discountedPrice: item.discountedPrice,
-    isDiscounted: item.isDiscounted || item.discountedPrice !== undefined,
-    image: item.image,
-    quantity: 1, // Default quantity
-    // Keep original properties
-    type: item.type,
-    description: item.description,
-    includes: item.includes,
-  };
-
-  const event = new CustomEvent("addToCart", { detail: itemToAdd });
-  window.dispatchEvent(event);
+// Map for category icons
+const CATEGORY_ICONS = {
+  [CATEGORY_IDS.HOT_DRINKS]: <FaHotjar />,
+  [CATEGORY_IDS.COLD_DRINKS]: <FaCocktail />,
+  [CATEGORY_IDS.DESSERTS]: <FaBirthdayCake />,
+  [CATEGORY_IDS.BREAKFAST]: <IoFastFoodOutline />,
+  [CATEGORY_IDS.OFFERS]: <MdLocalOffer />,
 };
 
 const MenuPage = () => {
-  const [activeCategory, setActiveCategory] = useState<string>("offers");
+  const [activeCategory, setActiveCategory] = useState<string>(
+    CATEGORY_IDS.OFFERS
+  );
   const [isScrolled, setIsScrolled] = useState(false);
   const [addedItems, setAddedItems] = useState<Set<number>>(new Set());
 
@@ -247,13 +52,13 @@ const MenuPage = () => {
 
   // Filter items based on active category
   const displayedItems =
-    activeCategory === "offers"
+    activeCategory === CATEGORY_IDS.OFFERS
       ? []
-      : menuCategories.find((cat) => cat.id === activeCategory)?.items || [];
+      : MENU_ITEMS.filter((item) => item.category === activeCategory);
 
   // Handle add to cart animation
   const handleAddToCart = (item: any) => {
-    addToCart(item);
+    createAddToCartEvent(item);
 
     // Add item ID to the set of added items for animation
     setAddedItems(new Set(addedItems.add(item.id)));
@@ -268,6 +73,11 @@ const MenuPage = () => {
     }, 1000);
   };
 
+  // Helper function to get icon for a category
+  const getCategoryIcon = (categoryId: string) => {
+    return CATEGORY_ICONS[categoryId as keyof typeof CATEGORY_ICONS] || null;
+  };
+
   return (
     <div className="min-h-screen bg-darkPrimary text-white font-iran-sans-regular">
       {/* Cafe Header with Logo */}
@@ -280,7 +90,7 @@ const MenuPage = () => {
           className="container mx-auto py-2 px-6 flex justify-center items-center"
           dir="rtl"
         >
-          <h1 className="font-morabba-bold text-3xl  mt-4">مِنو کافه رز</h1>
+          <h1 className="font-morabba-bold text-3xl mt-4">مِنو کافه رز</h1>
         </div>
       </header>
 
@@ -316,16 +126,19 @@ const MenuPage = () => {
             <div className="flex gap-2 min-w-max">
               <button
                 className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${
-                  activeCategory === "offers"
+                  activeCategory === CATEGORY_IDS.OFFERS
                     ? "bg-primary-500 text-white"
                     : "bg-darkSecondary hover:bg-darkSecondary/70"
                 }`}
-                onClick={() => setActiveCategory("offers")}
+                onClick={() => setActiveCategory(CATEGORY_IDS.OFFERS)}
               >
-                <MdLocalOffer />
-                <span>پیشنهادات ویژه</span>
+                {getCategoryIcon(CATEGORY_IDS.OFFERS)}
+                <span>{OFFERS_CATEGORY.name}</span>
               </button>
-              {menuCategories.map((category) => (
+
+              {MENU_CATEGORIES.filter(
+                (cat: any) => cat.id !== CATEGORY_IDS.ALL
+              ).map((category: any) => (
                 <button
                   key={category.id}
                   className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${
@@ -335,7 +148,7 @@ const MenuPage = () => {
                   }`}
                   onClick={() => setActiveCategory(category.id)}
                 >
-                  {category.icon}
+                  {getCategoryIcon(category.id)}
                   <span>{category.name}</span>
                 </button>
               ))}
@@ -343,15 +156,15 @@ const MenuPage = () => {
           </nav>
 
           {/* Special Offers Section */}
-          {activeCategory === "offers" && (
+          {activeCategory === CATEGORY_IDS.OFFERS && (
             <section>
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <MdLocalOffer className="text-primary-300" />
-                پیشنهادات ویژه
+                {getCategoryIcon(CATEGORY_IDS.OFFERS)}
+                <span className="text-primary-300">{OFFERS_CATEGORY.name}</span>
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {specialOffers.map((offer, index) => (
+                {PROMOTIONS.map((offer, index) => (
                   <motion.div
                     key={offer.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -418,11 +231,17 @@ const MenuPage = () => {
           )}
 
           {/* Regular Menu Items */}
-          {activeCategory !== "offers" && (
+          {activeCategory !== CATEGORY_IDS.OFFERS && (
             <section>
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                {menuCategories.find((cat) => cat.id === activeCategory)?.icon}
-                {menuCategories.find((cat) => cat.id === activeCategory)?.name}
+                {getCategoryIcon(activeCategory)}
+                <span>
+                  {
+                    MENU_CATEGORIES.find(
+                      (cat: any) => cat.id === activeCategory
+                    )?.name
+                  }
+                </span>
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -448,7 +267,11 @@ const MenuPage = () => {
                     <div className="p-4 flex-1 flex flex-col">
                       <div className="flex-1">
                         <h3 className="text-xl font-bold">{item.name}</h3>
-                        {/* Additional content could go here */}
+                        {item.description && (
+                          <p className="text-stone-300 text-sm mt-1">
+                            {item.description}
+                          </p>
+                        )}
                       </div>
 
                       <div className="mt-4 flex justify-between items-center pt-4 ">

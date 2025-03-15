@@ -107,7 +107,9 @@ const PhoneVerificationDiscount = () => {
               <FiCheck size={18} />
             </div>
             <div>
-              <h3 className="font-bold text-success-500">تخفیف ۱۵٪ فعال شد!</h3>
+              <h3 className="font-iran-sans-bold text-success-500">
+                تخفیف ۱۵٪ فعال شد!
+              </h3>
               <p className="text-sm">تخفیف شما روی سبد خرید اعمال شده است</p>
             </div>
           </div>
@@ -125,7 +127,7 @@ const PhoneVerificationDiscount = () => {
               <FiPhone size={18} />
             </div>
             <div>
-              <h3 className="font-bold text-amber-800">
+              <h3 className="font-iran-sans-bold text-amber-800">
                 تخفیف ویژه با تایید شماره موبایل
               </h3>
               <p className="text-sm text-amber-700">
@@ -219,7 +221,7 @@ const PhoneVerificationDiscount = () => {
               <div className="mx-auto w-16 h-16 rounded-full bg-success-400 flex items-center justify-center mb-4">
                 <FiCheck size={32} className="text-white" />
               </div>
-              <p className="font-bold text-xl mb-2">
+              <p className="font-iran-sans-bold text-xl mb-2">
                 تخفیف ۱۵٪ با موفقیت فعال شد
               </p>
               <p className="text-sm mb-6">
