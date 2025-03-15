@@ -8,7 +8,9 @@
 .font-iran-sans-regular {
   font-family: var(--font-iran-sans-regular);
 }
-
+.font-iran-sans-bold {
+  font-family: var(--font-iran-sans-bold);
+}
 @layer base {
   :root {
     --font-my-custom: "MorabbaFont";
@@ -156,5 +158,37 @@
   * {
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--primary)) #1b1b1b;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  /* Target Safari specifically */
+  .font-iran-sans-regular {
+    /* Prevent aggressive font weight in Safari */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400 !important; /* Force normal weight */
+  }
+  
+  .font-bold, .font-semibold {
+    /* Adjust bold font rendering for Safari */
+    -webkit-font-smoothing: antialiased;
+    font-weight: 600 !important; /* Control bold weight */
+  }
+  
+  /* Fix for over-wide carousel/slider in Safari */
+  .overflow-x-auto {
+    /* Prevent horizontal overflow */
+    width: 100%;
+    max-width: 100vw;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Additional Safari fixes for carousel items */
+  .overflow-x-auto > div {
+    /* Control flex item width */
+    flex-shrink: 0;
+    width: auto !important;
+    max-width: 90vw;
   }
 }

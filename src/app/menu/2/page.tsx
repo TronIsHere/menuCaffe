@@ -284,7 +284,7 @@ const ItemModal = ({ item, isOpen, onClose }: ItemModalProps) => {
         </div>
 
         <div className="p-5">
-          <h3 className="text-xl font-bold text-gray-800">{name}</h3>
+          <h3 className="text-xl font-iran-sans-bold text-gray-800">{name}</h3>
 
           {isOffer && "description" in item && (
             <p className="mt-2 text-gray-600 text-sm">{item.description}</p>
@@ -292,7 +292,9 @@ const ItemModal = ({ item, isOpen, onClose }: ItemModalProps) => {
 
           {isOffer && "includes" in item && item.includes && (
             <div className="mt-3 bg-amber-50 p-3 rounded-lg">
-              <p className="text-sm font-bold text-amber-800 mb-2">شامل:</p>
+              <p className="text-sm font-iran-sans-bold text-amber-800 mb-2">
+                شامل:
+              </p>
               <ul className="space-y-1">
                 {item.includes.map((included, idx) => (
                   <li
@@ -315,12 +317,12 @@ const ItemModal = ({ item, isOpen, onClose }: ItemModalProps) => {
                 <span className="text-gray-500 line-through text-sm">
                   {price.toLocaleString()} تومان
                 </span>
-                <div className="text-xl font-bold text-amber-600">
+                <div className="text-xl  text-amber-600">
                   {discountedPrice?.toLocaleString()} تومان
                 </div>
               </div>
             ) : (
-              <div className="text-xl font-bold text-gray-800">
+              <div className="text-xl  text-gray-800">
                 {price.toLocaleString()} تومان
               </div>
             )}
@@ -344,7 +346,7 @@ const ItemModal = ({ item, isOpen, onClose }: ItemModalProps) => {
             </div>
           </div>
 
-          <button className="mt-6 w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg transition-colors font-bold">
+          <button className="mt-6 w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg transition-colors ">
             افزودن به سبد خرید
           </button>
         </div>
@@ -365,9 +367,7 @@ const MenuSection = ({ category, onItemClick }: MenuSectionProps) => {
       >
         <div className="flex items-center gap-2">
           {category.icon}
-          <span className="font-bold text-lg text-gray-800">
-            {category.name}
-          </span>
+          <span className=" text-lg text-gray-800">{category.name}</span>
         </div>
         {isOpen ? <IoChevronDown /> : <IoChevronForward />}
       </button>
@@ -394,12 +394,12 @@ const MenuSection = ({ category, onItemClick }: MenuSectionProps) => {
                     <span className="text-xs text-gray-500 line-through">
                       {item.price.toLocaleString()} تومان
                     </span>
-                    <span className="text-amber-600 font-bold">
+                    <span className="text-amber-600 font-iran-sans-bold">
                       {item.discountedPrice?.toLocaleString()} تومان
                     </span>
                   </>
                 ) : (
-                  <span className="font-bold text-gray-800">
+                  <span className=" text-gray-800 font-iran-sans-bold">
                     {item.price.toLocaleString()} تومان
                   </span>
                 )}
@@ -412,23 +412,28 @@ const MenuSection = ({ category, onItemClick }: MenuSectionProps) => {
   );
 };
 
-// Special offers carousel
 const SpecialOffersCarousel = ({
   offers,
   onOfferClick,
 }: SpecialOffersCarouselProps) => {
   return (
-    <div className="relative">
-      <h2 className="text-xl font-bold text-amber-700 mb-4 flex items-center gap-2 px-3">
+    <div className="relative safari-carousel">
+      <h2 className="text-xl font-medium text-amber-700 mb-4 flex items-center gap-2 px-3">
         پیشنهادات ویژه
       </h2>
 
-      <div className="overflow-x-auto pb-4 flex gap-4 px-3">
+      <div className="overflow-x-auto pb-4 flex gap-4 px-3 w-full max-w-full safari-scroll">
         {offers.map((offer) => (
           <div
             key={offer.id}
             onClick={() => onOfferClick(offer)}
-            className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg min-w-64 flex-none overflow-hidden shadow-md border border-amber-200"
+            className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg flex-none overflow-hidden shadow-md border border-amber-200 safari-card"
+            style={{
+              width: "min(100%, 250px)",
+              maxWidth: "90vw",
+              flexShrink: 0,
+              height: "280px", // Fixed height for all cards
+            }}
           >
             <div className="relative h-32">
               <img
@@ -441,17 +446,22 @@ const SpecialOffersCarousel = ({
               </div>
             </div>
 
-            <div className="p-3">
-              <h3 className="font-bold text-gray-800">{offer.title}</h3>
-              <p className="text-xs text-gray-600 mt-1 line-clamp-2">
-                {offer.description}
-              </p>
+            {/* Using flex-col and h-full to create a fixed layout */}
+            <div className="p-3 flex flex-col h-[148px]">
+              {/* Title and description take available space */}
+              <div className="flex-1">
+                <h3 className="font-medium text-gray-800">{offer.title}</h3>
+                <p className="text-xs text-gray-600 mt-1 line-clamp-2">
+                  {offer.description}
+                </p>
+              </div>
 
-              <div className="flex justify-between items-center mt-2 text-sm">
+              {/* Price section is fixed at the bottom */}
+              <div className="flex justify-between items-center mt-2 text-sm pt-2 border-t border-amber-100">
                 <span className="line-through text-gray-500">
                   {offer.regularPrice.toLocaleString()}
                 </span>
-                <span className="font-bold text-amber-700">
+                <span className="font-medium text-amber-700">
                   {offer.discountedPrice.toLocaleString()} تومان
                 </span>
               </div>
@@ -484,7 +494,7 @@ const AlternativeMenuPage = () => {
             <h1 className="font-morabba-bold text-xl">مِنو کافه</h1>
           </div>
 
-          <button className="bg-white text-amber-600 px-4 py-1 rounded-full text-sm font-bold">
+          <button className="bg-white text-amber-600 px-4 py-1 rounded-full text-sm font-iran-sans-bold">
             سبد خرید
           </button>
         </div>
@@ -504,7 +514,9 @@ const AlternativeMenuPage = () => {
         <div className="bg-white rounded-t-xl shadow-md px-4 pb-4">
           <div className="flex items-center gap-2 py-4 border-b border-gray-200">
             <MdRestaurantMenu size={22} className="text-amber-600" />
-            <h2 className="text-lg font-bold text-gray-800">منوی کافه</h2>
+            <h2 className="text-lg font-iran-sans-bold text-gray-800">
+              منوی کافه
+            </h2>
           </div>
 
           {menuCategories.map((category) => (

@@ -17,7 +17,11 @@ const iranSansRegular = localFont({
   variable: "--font-iran-sans-regular",
   weight: "300",
 });
-
+const iranSansBold = localFont({
+  src: "./fonts/IRANSans-Bold.ttf",
+  variable: "--font-iran-sans-bold",
+  weight: "700",
+});
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${morabbaBold.variable} ${iranSansRegular.variable} antialiased`}
+        className={`${morabbaBold.variable} ${iranSansRegular.variable} ${iranSansBold.variable} antialiased`}
       >
         {children}
       </body>
