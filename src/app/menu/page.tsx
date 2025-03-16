@@ -17,7 +17,7 @@ import {
   MENU_CATEGORIES,
   OFFERS_CATEGORY,
 } from "@/lib/menu/constants";
-import { MENU_ITEMS, PROMOTIONS } from "@/lib/menu-data";
+import { MENU_ITEMS, PROMOTIONS } from "@/lib/menu/menu-data";
 import { createAddToCartEvent } from "@/lib/utils";
 
 // Map for category icons
@@ -97,7 +97,7 @@ const MenuPage = () => {
       {/* Main Content */}
       <main className="container mx-auto py-8 px-6" dir="rtl">
         <div className={`${isScrolled ? "mt-16" : ""}`}>
-          <PhoneVerificationDiscount />
+          {/* <PhoneVerificationDiscount /> */}
           {/* Hero Banner for Most Popular Offer */}
           <div className="relative h-64 md:h-96 rounded-xl overflow-hidden mb-8">
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>

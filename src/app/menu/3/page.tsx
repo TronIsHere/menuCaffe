@@ -14,7 +14,7 @@ import {
 } from "react-icons/fi";
 
 // Import the shared data module
-import { MENU_ITEMS, PROMOTIONS } from "@/lib/menu-data";
+import { MENU_ITEMS, PROMOTIONS } from "@/lib/menu/menu-data";
 
 // Import promotion slider from components
 import PromotionsCarousel from "@/components/menu/promotionSlider";

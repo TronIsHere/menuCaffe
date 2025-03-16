@@ -21,7 +21,7 @@ import {
 } from "react-icons/md";
 
 // Import the shared data module
-import { MENU_ITEMS, PROMOTIONS } from "@/lib/menu-data";
+import { MENU_ITEMS, PROMOTIONS } from "@/lib/menu/menu-data";
 import { CATEGORY_IDS, MENU_CATEGORIES } from "@/lib/menu/constants";
 import { createAddToCartEvent } from "@/lib/utils";
 
