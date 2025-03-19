@@ -24,7 +24,7 @@ const navItems: NavItem[] = [
   },
   {
     label: "محصولات",
-    href: "/dashboard/items",
+    href: "/dashboard/products",
     icon: <FaLayerGroup size={18} />,
   },
   {
