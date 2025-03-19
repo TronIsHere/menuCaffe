@@ -8,12 +8,12 @@ const CategorySchema: Schema = new Schema<ICategory>(
   {
     name: {
       type: String,
-      required: [true, "Please provide a category name"],
+      required: [true, "نام دسته‌بندی الزامی است"],
       trim: true,
     },
     icon: {
       type: String,
-      required: [true, "Please provide an icon path"],
+      required: [true, "آیکون دسته‌بندی الزامی است"],
     },
   },
   {
