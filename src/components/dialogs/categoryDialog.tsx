@@ -7,11 +7,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 import { categoryIcons } from "@/lib/data";
 import { FC, ReactNode, useState } from "react";
+import { IoClose } from "react-icons/io5";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { MdDoneOutline } from "react-icons/md";
+import { createCategory } from "@/services/categoryService";
 
 interface CategoryDialogProps {
   trigger?: ReactNode;
@@ -19,6 +23,8 @@ interface CategoryDialogProps {
 }
 
 const CategoryDialog: FC<CategoryDialogProps> = ({ trigger, edit = true }) => {
+  const { toast } = useToast();
+  const [open, setOpen] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState<string | null>();
   const [categoryName, setCategoryName] = useState<string>("");
 
@@ -28,14 +34,37 @@ const CategoryDialog: FC<CategoryDialogProps> = ({ trigger, edit = true }) => {
     setSelectedIcon(iconPath);
   };
 
-  const handleSave = () => {
-    // Here you would handle the save functionality
-    console.log("Saving category:", { name: categoryName, icon: selectedIcon });
-    // Close dialog after saving
+  const handleSave = async () => {
+    toast({
+      title: "اضافه شد",
+      description: "ایتم با موفقیت اضافه شد",
+      variant: "success",
+      icon: <MdDoneOutline size={20} />,
+    });
+    try {
+      const addedCategory = await createCategory({
+        name: categoryName,
+        icon: selectedIcon!,
+      });
+      toast({
+        title: "اضافه شد",
+        description: "ایتم با موفقیت اضافه شد",
+        variant: "success",
+        icon: <MdDoneOutline size={20} />,
+      });
+      setOpen(false);
+    } catch (error) {
+      toast({
+        title: "مشکلی پیش امده",
+        description: "مشکلی پیش امده لطفا بعدا امتحان کنید",
+        variant: "destructive",
+        icon: <IoClose size={30} />,
+      });
+    }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger || <span>Open</span>}</DialogTrigger>
       <DialogContent
         darkMode={true}

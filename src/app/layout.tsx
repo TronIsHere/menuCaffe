@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Your App Name",
@@ -32,7 +33,8 @@ export default function RootLayout({
       <body
         className={`${morabbaBold.variable} ${iranSansRegular.variable} ${iranSansBold.variable} antialiased`}
       >
-        {children}
+        <main>{children}</main>
+        <Toaster />
       </body>
     </html>
   );
