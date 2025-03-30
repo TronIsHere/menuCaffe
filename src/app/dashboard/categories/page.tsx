@@ -11,15 +11,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getCategories } from "@/services/categoryService";
+import { useToast } from "@/hooks/use-toast";
+import { deleteCategory, getCategories } from "@/services/categoryService";
 import { Category } from "@/types/category-types";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
+import { MdDoneOutline } from "react-icons/md";
 // interface CategoriesPageProps {}
 
 const CategoriesPage: NextPage = () => {
   const [categoriesState, setCategoriesState] = useState<Category[]>([]);
+  const { toast } = useToast();
   const getCategoriesData = async () => {
     const response = await getCategories();
     const data = response.data;
@@ -28,6 +32,26 @@ const CategoriesPage: NextPage = () => {
   useEffect(() => {
     getCategoriesData();
   }, []);
+
+  const handleDeleteCategory = async (id: string) => {
+    await deleteCategory(id);
+    try {
+      toast({
+        title: "حذف شد",
+        description: "دسته بندی با موفقیت حذف شد",
+        variant: "success",
+        icon: <MdDoneOutline size={20} />,
+      });
+    } catch (error) {
+      toast({
+        title: "مشکلی پیش آمده",
+        description: "حذف دسته بندی با مشکل مواجه شد. لطفا دوباره تلاش کنید",
+        variant: "destructive",
+        icon: <IoClose size={20} />,
+        duration: 3000,
+      });
+    }
+  };
   return (
     <div className="text-white font-iran-sans-regular" dir="rtl">
       <h1 className="font-bold text-3xl">محصولات</h1>
@@ -78,7 +102,13 @@ const CategoriesPage: NextPage = () => {
                     </Button>
                   }
                 />
-                <Button variant="destructive" size={"sm"}>
+                <Button
+                  variant="destructive"
+                  size={"sm"}
+                  onClick={() => {
+                    handleDeleteCategory(item._id);
+                  }}
+                >
                   حذف
                 </Button>
               </TableCell>

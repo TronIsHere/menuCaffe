@@ -32,3 +32,21 @@ export async function createCategory(
     throw new Error("Failed to create category");
   }
 }
+export async function deleteCategory(id: string): Promise<void> {
+  try {
+    const response = await axios.delete("/api/category", {
+      data: { _id: id },
+    });
+
+    if (!response.data.success) {
+      throw new Error(response.data.error || "Failed to delete category");
+    }
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error || "Failed to delete category");
+    }
+    throw new Error("Failed to delete category");
+  }
+}
