@@ -104,3 +104,70 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
+export async function PUT(request: NextRequest) {
+  try {
+    await dbConnect();
+    const body = await request.json();
+
+    // Validate required fields
+    if (!body._id) {
+      return NextResponse.json(
+        { success: false, error: "MongoDB _id is required in request body" },
+        { status: 400 }
+      );
+    }
+
+    if (!body.name || !body.icon) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Missing required fields",
+          requiredFields: ["name", "icon"],
+        },
+        { status: 400 }
+      );
+    }
+
+    // Check if another category with the same name exists (excluding the current one)
+    const existingCategory = await Category.findOne({
+      name: body.name,
+      _id: { $ne: body._id },
+    });
+
+    if (existingCategory) {
+      return NextResponse.json(
+        { success: false, error: "A category with this name already exists" },
+        { status: 409 }
+      );
+    }
+
+    // Update the category
+    const updatedCategory = await Category.findByIdAndUpdate(
+      body._id,
+      { name: body.name, icon: body.icon },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedCategory) {
+      return NextResponse.json(
+        { success: false, error: "Category not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: updatedCategory,
+        message: "Category updated successfully",
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error updating category:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to update category" },
+      { status: 500 }
+    );
+  }
+}

@@ -50,3 +50,26 @@ export async function deleteCategory(id: string): Promise<void> {
     throw new Error("Failed to delete category");
   }
 }
+export async function updateCategory(
+  _id: string,
+  categoryData: { name: string; icon: string }
+): Promise<Category> {
+  try {
+    // Include the _id in the request body
+    const response = await axios.put("/api/category", {
+      _id,
+      ...categoryData,
+    });
+
+    if (!response.data.success) {
+      throw new Error(response.data.error || "Failed to update category");
+    }
+
+    return response.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error || "Failed to update category");
+    }
+    throw new Error("Failed to update category");
+  }
+}
