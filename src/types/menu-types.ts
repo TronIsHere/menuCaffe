@@ -1,13 +1,4 @@
 import { ReactNode } from "react";
-import {
-  MdCoffee,
-  MdLocalCafe,
-  MdLocalBar,
-  MdCake,
-  MdOutlineBreakfastDining,
-} from "react-icons/md";
-import { FaHotjar, FaCocktail, FaBirthdayCake } from "react-icons/fa";
-import { IoFastFoodOutline } from "react-icons/io5";
 
 export interface Promotion {
   id: number;

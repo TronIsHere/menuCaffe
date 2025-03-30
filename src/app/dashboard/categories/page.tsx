@@ -1,6 +1,7 @@
-import { NextPage } from "next";
+"use client";
+
+import CategoryDialog from "@/components/dialogs/categoryDialog";
 import { Button } from "@/components/ui/button";
-import { FaEye } from "react-icons/fa";
 import {
   Table,
   TableBody,
@@ -10,12 +11,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import EditDialog from "@/components/dialogs/editDialog";
+import { getCategories } from "@/services/categoryService";
+import { Category } from "@/types/category-types";
+import { NextPage } from "next";
+import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
-import CategoryDialog from "@/components/dialogs/categoryDialog";
 // interface CategoriesPageProps {}
 
 const CategoriesPage: NextPage = () => {
+  const [categoriesState, setCategoriesState] = useState<Category[]>([]);
+  const getCategoriesData = async () => {
+    const response = await getCategories();
+    const data = response.data;
+    setCategoriesState(data);
+  };
+  useEffect(() => {
+    getCategoriesData();
+  }, []);
   return (
     <div className="text-white font-iran-sans-regular" dir="rtl">
       <h1 className="font-bold text-3xl">محصولات</h1>
@@ -42,38 +54,36 @@ const CategoriesPage: NextPage = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {Array(10)
-            .fill("")
-            .map((_, index) => (
-              <TableRow key={index}>
-                <TableCell className="font-medium">
-                  <div className="flex items-center gap-2">
-                    <span className="flex items-center">نوشیدنی گرم</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <img
-                    src="/img/categoryIcons/cocoa.png"
-                    className="w-8 h-8 object-cover rounded-sm"
-                  />
-                </TableCell>
-                <TableCell>
-                  <span>12</span>
-                </TableCell>
-                <TableCell className="flex justify-end gap-3">
-                  <CategoryDialog
-                    trigger={
-                      <Button variant="secondary" size={"sm"}>
-                        ویرایش
-                      </Button>
-                    }
-                  />
-                  <Button variant="destructive" size={"sm"}>
-                    حذف
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+          {categoriesState.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell className="font-medium">
+                <div className="flex items-center gap-2">
+                  <span className="flex items-center">{item.name}</span>
+                </div>
+              </TableCell>
+              <TableCell>
+                <img
+                  src={item.icon}
+                  className="w-8 h-8 object-cover rounded-sm"
+                />
+              </TableCell>
+              <TableCell>
+                <span>12</span>
+              </TableCell>
+              <TableCell className="flex justify-end gap-3">
+                <CategoryDialog
+                  trigger={
+                    <Button variant="secondary" size={"sm"}>
+                      ویرایش
+                    </Button>
+                  }
+                />
+                <Button variant="destructive" size={"sm"}>
+                  حذف
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>

@@ -1,13 +1,11 @@
-export interface Category {
-  _id: string;
-  name: string;
-  icon: string;
-  createdAt: string;
-  updatedAt: string;
+import { Category } from "@/types/category-types";
+
+interface categoryResponse {
+  data: Category[];
 }
 
-export async function getCategories(): Promise<Category[]> {
-  const response = await fetch("/api/categories");
+export async function getCategories(): Promise<categoryResponse> {
+  const response = await fetch("/api/category");
   if (!response.ok) {
     throw new Error("Failed to fetch categories");
   }
