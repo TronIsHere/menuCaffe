@@ -19,13 +19,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "../ui/button";
+import { Category } from "@/types/category-types";
 
-interface EditDialogProps {
+interface ProductDialogProps {
   trigger?: ReactNode;
   edit?: boolean;
+  categories?: Category[];
 }
 
-const EditDialog: FC<EditDialogProps> = ({ trigger, edit = true }) => {
+const ProductDialog: FC<ProductDialogProps> = ({
+  trigger,
+  edit = true,
+  categories = [],
+}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger || <span>Open</span>}</DialogTrigger>
@@ -57,9 +63,11 @@ const EditDialog: FC<EditDialogProps> = ({ trigger, edit = true }) => {
                   <SelectValue placeholder="انتخاب دسته بندی" />
                 </SelectTrigger>
                 <SelectContent className="text-right" dir="rtl">
-                  <SelectItem value="light">نوشیدنی گرم</SelectItem>
-                  <SelectItem value="dark">غذا</SelectItem>
-                  <SelectItem value="system">نوشیدنی سرد</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category._id} value={category._id}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <Button variant={"default"} className="mt-10">
@@ -73,4 +81,4 @@ const EditDialog: FC<EditDialogProps> = ({ trigger, edit = true }) => {
   );
 };
 
-export default EditDialog;
+export default ProductDialog;

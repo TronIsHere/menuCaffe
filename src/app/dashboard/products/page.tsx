@@ -12,29 +12,47 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import EditDialog from "@/components/dialogs/editDialog";
+import ProductDialog from "@/components/dialogs/productDialog";
 import { IoMdAdd } from "react-icons/io";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getProducts } from "@/services/productService";
 import { Product } from "@/types/product-types";
+import { Category } from "@/types/category-types";
+import { getCategories } from "@/services/categoryService";
 
 const itemsPage: NextPage = () => {
   const [productsState, setProductsState] = useState<Product[]>([]);
+  const [categoriesState, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
   const getProductsData = async () => {
     const response = await getProducts();
     const data = response.data;
     setProductsState(data);
   };
+  const fetchCategories = async () => {
+    try {
+      setLoading(true);
+      const response = await getCategories();
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
+    fetchCategories();
     getProductsData();
   }, []);
   return (
     <div className="text-white font-iran-sans-regular" dir="rtl">
       <h1 className="font-bold text-3xl">محصولات</h1>
       <div className="flex mt-5 gap-3 ">
-        <EditDialog
+        <ProductDialog
           edit={false}
+          categories={categoriesState}
           trigger={
             <Button variant="default">
               <IoMdAdd />
@@ -74,7 +92,7 @@ const itemsPage: NextPage = () => {
                 </TableCell>
                 <TableCell>نوشیدنی گرم</TableCell>
                 <TableCell className="flex justify-end gap-3">
-                  <EditDialog
+                  <ProductDialog
                     trigger={
                       <Button variant="secondary" size={"sm"}>
                         ویرایش
