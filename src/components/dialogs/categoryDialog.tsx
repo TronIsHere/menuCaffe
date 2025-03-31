@@ -9,20 +9,31 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { categoryIcons } from "@/lib/data";
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { MdDoneOutline } from "react-icons/md";
-import { createCategory } from "@/services/categoryService";
+import { createCategory, updateCategory } from "@/services/categoryService";
 
 interface CategoryDialogProps {
   trigger?: ReactNode;
   edit?: boolean;
+  categoryTitle?: string;
+  icon?: string;
+  categoryId?: string; // Add this to receive the category ID
+  onSuccess?: () => void;
 }
 
-const CategoryDialog: FC<CategoryDialogProps> = ({ trigger, edit = true }) => {
+const CategoryDialog: FC<CategoryDialogProps> = ({
+  trigger,
+  categoryTitle = "",
+  icon = "",
+  categoryId = "",
+  edit = false,
+  onSuccess,
+}) => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState<string | null>();
@@ -34,24 +45,49 @@ const CategoryDialog: FC<CategoryDialogProps> = ({ trigger, edit = true }) => {
     setSelectedIcon(iconPath);
   };
 
+  useEffect(() => {
+    if (edit && categoryId) {
+      setCategoryName(categoryTitle);
+      setSelectedIcon(icon);
+    }
+  }, []);
+
   const handleSave = async () => {
-    toast({
-      title: "اضافه شد",
-      description: "ایتم با موفقیت اضافه شد",
-      variant: "success",
-      icon: <MdDoneOutline size={20} />,
-    });
     try {
-      const addedCategory = await createCategory({
-        name: categoryName,
-        icon: selectedIcon!,
-      });
-      toast({
-        title: "اضافه شد",
-        description: "ایتم با موفقیت اضافه شد",
-        variant: "success",
-        icon: <MdDoneOutline size={20} />,
-      });
+      if (edit && categoryId) {
+        // Update existing category
+        await updateCategory(categoryId, {
+          name: categoryName,
+          icon: selectedIcon!,
+        });
+
+        toast({
+          title: "ویرایش شد",
+          description: "دسته بندی با موفقیت ویرایش شد",
+          variant: "success",
+          icon: <MdDoneOutline size={20} />,
+        });
+      } else {
+        // Create new category
+        await createCategory({
+          name: categoryName,
+          icon: selectedIcon!,
+        });
+
+        toast({
+          title: "اضافه شد",
+          description: "دسته بندی با موفقیت اضافه شد",
+          variant: "success",
+          icon: <MdDoneOutline size={20} />,
+        });
+      }
+
+      // Call the success callback to refresh data
+      if (onSuccess) {
+        onSuccess();
+      }
+
+      // Close the dialog
       setOpen(false);
     } catch (error) {
       toast({

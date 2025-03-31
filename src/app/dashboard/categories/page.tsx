@@ -96,6 +96,10 @@ const CategoriesPage: NextPage = () => {
               </TableCell>
               <TableCell className="flex justify-end gap-3">
                 <CategoryDialog
+                  edit={true}
+                  categoryTitle={item.name}
+                  icon={item.icon}
+                  categoryId={item._id}
                   trigger={
                     <Button variant="secondary" size={"sm"}>
                       ویرایش
