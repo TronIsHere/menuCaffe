@@ -16,10 +16,6 @@ const ProductSchema = new mongoose.Schema<IProduct>(
       type: String,
       required: [true, "نام محصول الزامی است"],
     },
-    description: {
-      type: String,
-      required: [true, "توضیحات محصول الزامی است"],
-    },
     price: {
       type: Number,
       required: [true, "قیمت محصول الزامی است"],

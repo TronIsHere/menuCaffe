@@ -1,3 +1,4 @@
+import { Category } from "@/types/category-types";
 import { MenuItem, PromotionItem } from "@/types/menu-types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -28,4 +29,12 @@ export function createAddToCartEvent(item: MenuItem | PromotionItem) {
   // Create the custom event
   const event = new CustomEvent("addToCart", { detail: itemToAdd });
   window.dispatchEvent(event);
+}
+export function getCategoryName(
+  categoryId: string,
+  categories: Category[],
+  defaultName: string = "دسته‌بندی نامشخص"
+): string {
+  const category = categories.find((cat) => cat._id === categoryId);
+  return category ? category.name : defaultName;
 }

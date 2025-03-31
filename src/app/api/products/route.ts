@@ -28,6 +28,7 @@ export async function POST(request: Request) {
     );
     return NextResponse.json(populatedProduct);
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: "خطا در ایجاد محصول" }, { status: 500 });
   }
 }

@@ -8,3 +8,9 @@ export interface Product {
   createdAt: string;
   updatedAt: string;
 }
+export interface CreateProductInput {
+  name: string;
+  price: number;
+  categoryId: string;
+  image?: string;
+}

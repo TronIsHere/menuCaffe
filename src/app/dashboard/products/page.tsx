@@ -20,6 +20,7 @@ import { getProducts } from "@/services/productService";
 import { Product } from "@/types/product-types";
 import { Category } from "@/types/category-types";
 import { getCategories } from "@/services/categoryService";
+import { getCategoryName } from "@/lib/utils";
 
 const itemsPage: NextPage = () => {
   const [productsState, setProductsState] = useState<Product[]>([]);
@@ -28,6 +29,7 @@ const itemsPage: NextPage = () => {
   const getProductsData = async () => {
     const response = await getProducts();
     const data = response.data;
+
     setProductsState(data);
   };
   const fetchCategories = async () => {
@@ -43,9 +45,9 @@ const itemsPage: NextPage = () => {
   };
 
   useEffect(() => {
-    fetchCategories();
-    getProductsData();
+    fetchCategories().then(() => getProductsData());
   }, []);
+
   return (
     <div className="text-white font-iran-sans-regular" dir="rtl">
       <h1 className="font-bold text-3xl">محصولات</h1>
@@ -77,20 +79,22 @@ const itemsPage: NextPage = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {productsState && productsState.length > 0 ? (
-            productsState.map((_, index) => (
+          {productsState ? (
+            productsState.map((item, index) => (
               <TableRow key={index}>
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-2">
                     <img
-                      src="https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?q=80&w=1349&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                      alt="کاپوچینو"
+                      src={item.image}
+                      alt="product image"
                       className="w-8 h-8 object-cover rounded-sm"
                     />
-                    <span className="flex items-center">فرامپاچینو و کیک</span>
+                    <span className="flex items-center">{item.name}</span>
                   </div>
                 </TableCell>
-                <TableCell>نوشیدنی گرم</TableCell>
+                <TableCell>
+                  {getCategoryName(item.categoryId._id, categoriesState)}
+                </TableCell>
                 <TableCell className="flex justify-end gap-3">
                   <ProductDialog
                     trigger={
