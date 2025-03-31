@@ -10,13 +10,13 @@ export interface CreateCategoryInput {
 }
 
 export async function getCategories(): Promise<categoryResponse> {
-  const response = await fetch("/api/category");
-  if (!response.ok) {
+  try {
+    const response = await axios.get("/api/category");
+    return response.data;
+  } catch (error) {
     throw new Error("Failed to fetch categories");
   }
-  return response.json();
 }
-
 export async function createCategory(
   categoryData: CreateCategoryInput
 ): Promise<Category> {

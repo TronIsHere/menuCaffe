@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { NextPage } from "next";
 import { FaEye } from "react-icons/fa";
@@ -13,8 +15,20 @@ import {
 import EditDialog from "@/components/dialogs/editDialog";
 import { IoMdAdd } from "react-icons/io";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getProducts } from "@/services/productService";
+import { Product } from "@/types/product-types";
 
 const itemsPage: NextPage = () => {
+  const [productsState, setProductsState] = useState<Product[]>([]);
+  const getProductsData = async () => {
+    const response = await getProducts();
+    const data = response.data;
+    setProductsState(data);
+  };
+  useEffect(() => {
+    getProductsData();
+  }, []);
   return (
     <div className="text-white font-iran-sans-regular" dir="rtl">
       <h1 className="font-bold text-3xl">محصولات</h1>
@@ -45,9 +59,8 @@ const itemsPage: NextPage = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {Array(10)
-            .fill("")
-            .map((_, index) => (
+          {productsState && productsState.length > 0 ? (
+            productsState.map((_, index) => (
               <TableRow key={index}>
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-2">
@@ -73,7 +86,14 @@ const itemsPage: NextPage = () => {
                   </Button>
                 </TableCell>
               </TableRow>
-            ))}
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={3} className="text-center py-6 text-gray-500">
+                محصولی یافت نشد
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>
